@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.client.render.entity;
 
+import com.github.liachmodded.kayak.entity.PitchableBoat;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -77,6 +78,11 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
       matrixStack_1.multiply(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boatEntity_1.interpolateBubbleWobble(float_2), true));
     }
 
+    if (boatEntity_1 instanceof PitchableBoat) {
+      float pitch = ((PitchableBoat) boatEntity_1).getRenderPitch(float_2);
+      matrixStack_1.multiply(Vector3f.POSITIVE_X.getRotationQuaternion(pitch));
+    }
+
     matrixStack_1.scale(-1.0F, -1.0F, 1.0F);
     int int_1 = boatEntity_1.getLightmapCoordinates();
     matrixStack_1.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
@@ -87,7 +93,7 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
     VertexConsumer vertexConsumer_1 = layeredVertexConsumerStorage_1.getBuffer(this.model.method_23500(this.getTexture(boatEntity_1)));
     this.model.renderItem(matrixStack_1, vertexConsumer_1, int_1, OverlayTexture.field_21444, 1.0F, 1.0F, 1.0F);
     VertexConsumer vertexConsumer_2 = layeredVertexConsumerStorage_1.getBuffer(RenderLayer.getWaterMask());
-    this.model.method_22954().render(matrixStack_1, vertexConsumer_2, 0.0625F, int_1, OverlayTexture.field_21444, (Sprite) null);
+    this.model.method_22954().render(matrixStack_1, vertexConsumer_2, 0.0625F, int_1, OverlayTexture.field_21444, null);
     matrixStack_1.pop();
     super.render(boatEntity_1, double_1, double_2, double_3, float_1, float_2, matrixStack_1, layeredVertexConsumerStorage_1);
   }

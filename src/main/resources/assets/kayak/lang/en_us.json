@@ -1,5 +1,7 @@
 {
   "entity.kayak.block_carrier_boat": "Block Carrier Boat",
+  "entity.kayak.chest_carrier_boat": "Chest Carrier Boat",
+  "entity.kayak.furnace_carrier_boat": "Furnace Carrier Boat",
   "item.kayak.oak_carrier_boat": "Oak Block Carrier Boat",
   "item.kayak.spruce_carrier_boat": "Spruce Block Carrier Boat",
   "item.kayak.birch_carrier_boat": "Birch Block Carrier Boat",

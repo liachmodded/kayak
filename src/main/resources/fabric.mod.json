@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.github.liachmodded.kayak.KayakClient"
+      "com.github.liachmodded.kayak.client.KayakClient"
     ],
     "main": [
       "com.github.liachmodded.kayak.Kayak"

@@ -6,6 +6,7 @@
 package com.github.liachmodded.kayak.item;
 
 import com.github.liachmodded.kayak.Kayak;
+import com.github.liachmodded.kayak.entity.KayakEntities;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -24,10 +25,13 @@ public final class KayakItems {
     Map<Type, Item> boats = new EnumMap<>(Type.class);
     Settings settings = new Settings().maxCount(1).group(ItemGroup.TRANSPORTATION);
     for (Type boatType : Type.values()) {
-      boats.put(boatType, register(boatType.getName() + "_carrier_boat", new BlockCarrierBoatItem(boatType, settings)));
+      boats.put(boatType,
+          register(boatType.getName() + "_carrier_boat", new BlockCarrierBoatItem(KayakEntities.CHEST_CARRIER_BOAT, boatType, settings)));
     }
     BOAT_ITEMS = Collections.unmodifiableMap(boats);
   }
+
+  private KayakItems() {}
 
   static <T extends Item> T register(String name, T item) {
     return Registry.register(Registry.ITEM, Kayak.name(name), item);
@@ -55,7 +59,5 @@ public final class KayakItems {
   public static void init() {
     // classloading
   }
-
-  private KayakItems() {}
 
 }

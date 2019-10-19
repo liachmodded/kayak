@@ -8,6 +8,7 @@ package com.github.liachmodded.kayak;
 import com.github.liachmodded.kayak.entity.KayakEntities;
 import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
+import com.github.liachmodded.kayak.ui.KayakContainerProviders;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -30,5 +31,6 @@ public final class Kayak implements ModInitializer {
     KayakEntities.init();
     KayakItems.init();
     KayakStats.init();
+    KayakContainerProviders.init();
   }
 }

@@ -6,11 +6,11 @@
 package com.github.liachmodded.kayak.item;
 
 import com.github.liachmodded.kayak.entity.BlockCarrierBoatEntity;
-import com.github.liachmodded.kayak.entity.KayakEntities;
+import com.google.common.base.Preconditions;
 import java.util.List;
 import java.util.function.Predicate;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
@@ -28,10 +28,17 @@ import net.minecraft.world.World;
 public class BlockCarrierBoatItem extends Item {
 
   private static final Predicate<Entity> COLLISION_CHECK;
+
+  static {
+    COLLISION_CHECK = EntityPredicates.EXCEPT_SPECTATOR.and(Entity::collides);
+  }
+
+  private final EntityType<? extends BlockCarrierBoatEntity> entityType;
   private final BoatEntity.Type type;
 
-  public BlockCarrierBoatItem(BoatEntity.Type type, Settings settings) {
+  public BlockCarrierBoatItem(EntityType<? extends BlockCarrierBoatEntity> entityType, BoatEntity.Type type, Settings settings) {
     super(settings);
+    this.entityType = entityType;
     this.type = type;
   }
 
@@ -56,10 +63,9 @@ public class BlockCarrierBoatItem extends Item {
       }
 
       if (hitResult.getType() == HitResult.Type.BLOCK) {
-        BlockCarrierBoatEntity boat = new BlockCarrierBoatEntity(KayakEntities.BLOCK_CARRIER_BOAT, world);
+        BlockCarrierBoatEntity boat = Preconditions.checkNotNull(entityType.create(world));
         boat.init(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         boat.setBoatType(this.type);
-        boat.setCarriedState(Blocks.CHEST.getDefaultState());
         boat.yaw = player.yaw;
         if (!world.doesNotCollide(boat, boat.getBoundingBox().expand(-0.1D))) {
           return TypedActionResult.fail(stack);
@@ -78,9 +84,5 @@ public class BlockCarrierBoatItem extends Item {
         return TypedActionResult.pass(stack);
       }
     }
-  }
-
-  static {
-    COLLISION_CHECK = EntityPredicates.EXCEPT_SPECTATOR.and(Entity::collides);
   }
 }

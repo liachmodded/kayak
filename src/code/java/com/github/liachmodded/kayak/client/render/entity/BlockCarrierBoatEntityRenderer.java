@@ -14,20 +14,20 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.util.math.MatrixStack;
 
-public final class BlockCarrierBoatEntityRenderer extends AbstractBoatEntityRenderer<BlockCarrierBoatEntity> {
+public final class BlockCarrierBoatEntityRenderer<T extends BlockCarrierBoatEntity> extends AbstractBoatEntityRenderer<T> {
 
   public BlockCarrierBoatEntityRenderer(EntityRenderDispatcher entityRenderDispatcher_1) {
     super(entityRenderDispatcher_1);
   }
 
   @Override
-  protected void renderContent(BlockCarrierBoatEntity entity, double double_1, double double_2, double double_3, float float_1, float float_2,
+  protected void renderContent(T entity, double double_1, double double_2, double double_3, float float_1, float float_2,
       MatrixStack matrixStack_1, LayeredVertexConsumerStorage layeredVertexConsumerStorage_1) {
     BlockState state = entity.getCarriedState();
     if (state.getRenderType() != BlockRenderType.INVISIBLE) {
       int blockOffset = 6;//entity.getBlockOffset();
       int ambientLightmapIndex = entity.getLightmapCoordinates();
-      int blockLight = state.hasEmissiveLighting() ? 15 : Math.max(ambientLightmapIndex & ((1 << 20) - 1), state.getLuminance());
+      int blockLight = state.hasEmissiveLighting() ? 15 : Math.max((ambientLightmapIndex & ((1 << 20) - 1)) >> 4, state.getLuminance());
       int lightmapIndex = ((ambientLightmapIndex >> 20) << 20) | blockLight << 4;
       matrixStack_1.push();
       matrixStack_1.scale(-1, -1, 1); // Boat is flipped by default

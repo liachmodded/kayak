@@ -15,8 +15,20 @@ import net.minecraft.util.registry.Registry;
 
 public final class KayakEntities {
 
-  public static final EntityType<BlockCarrierBoatEntity> BLOCK_CARRIER_BOAT = register("block_carrier_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, BlockCarrierBoatEntity::new)
+  public static final EntityType<ChestCarrierBoatEntity> CHEST_CARRIER_BOAT = register("chest_carrier_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, ChestCarrierBoatEntity::new)
+          .size(EntityDimensions.fixed(1.375F, 0.5625F))
+          .trackable(80, 3)
+          .build()
+  );
+  public static final EntityType<ArbitraryBlockCarrierBoatEntity> BLOCK_CARRIER_BOAT = register("block_carrier_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, ArbitraryBlockCarrierBoatEntity::new)
+          .size(EntityDimensions.fixed(1.375F, 0.5625F))
+          .trackable(80, 3)
+          .build()
+  );
+  public static final EntityType<FurnaceCarrierBoatEntity> FURNACE_CARRIER_BOAT = register("furnace_carrier_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, FurnaceCarrierBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()

@@ -14,4 +14,10 @@ public interface BoatEntityAccess {
 
   @Accessor
   float getYawVelocity();
+
+  @Accessor
+  float getVelocityDecay();
+
+  @Accessor
+  void setVelocityDecay(float velocityDecay);
 }

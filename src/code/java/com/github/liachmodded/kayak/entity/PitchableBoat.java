@@ -5,10 +5,8 @@
  */
 package com.github.liachmodded.kayak.entity;
 
-import net.minecraft.entity.damage.DamageSource;
+public interface PitchableBoat {
 
-public interface CustomDropBoat {
-
-  void dropCustom(DamageSource source);
+  float getRenderPitch(float partialTicks);
 
 }

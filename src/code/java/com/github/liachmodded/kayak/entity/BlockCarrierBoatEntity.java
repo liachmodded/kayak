@@ -6,45 +6,21 @@
 package com.github.liachmodded.kayak.entity;
 
 import com.github.liachmodded.kayak.item.KayakItems;
-import com.github.liachmodded.kayak.item.inventory.KayakInventoryTools;
 import com.github.liachmodded.kayak.mixin.BoatEntityAccess;
-import com.github.liachmodded.kayak.stat.KayakStats;
-import java.util.Optional;
-import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.network.ClientDummyContainerProvider;
-import net.minecraft.container.ContainerType;
-import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.inventory.BasicInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-public class BlockCarrierBoatEntity extends BoatEntity implements PositionInitializerEntity, CustomDropBoat, CustomInventoryVehicle {
+public abstract class BlockCarrierBoatEntity extends BoatEntity implements PositionInitializerEntity {
 
-  private static final BlockState AIR = Blocks.AIR.getDefaultState();
-  private static final TrackedData<Optional<BlockState>> CARRIED_STATE = DataTracker
-      .registerData(BlockCarrierBoatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_STATE);
-
-  private BasicInventory inventory = new BasicInventory(27);
-
-  public BlockCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
+  protected BlockCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1);
   }
 
@@ -57,19 +33,7 @@ public class BlockCarrierBoatEntity extends BoatEntity implements PositionInitia
     this.prevZ = z;
   }
 
-  @Override
-  protected void initDataTracker() {
-    super.initDataTracker();
-    this.dataTracker.startTracking(CARRIED_STATE, Optional.of(AIR));
-  }
-
-  public BlockState getCarriedState() {
-    return dataTracker.get(CARRIED_STATE).orElse(AIR);
-  }
-
-  public void setCarriedState(BlockState state) {
-    this.dataTracker.set(CARRIED_STATE, Optional.of(state));
-  }
+  public abstract BlockState getCarriedState();
 
   @Override
   public boolean interact(PlayerEntity playerEntity_1, Hand hand_1) {
@@ -81,8 +45,6 @@ public class BlockCarrierBoatEntity extends BoatEntity implements PositionInitia
     // test negative dot product
     Vec3d facing = getRotationVector(0f, this.yaw);
     boolean back = hitPos.dotProduct(facing) < 0;
-    //player.sendMessage(new LiteralText(
-    //String.format("Hit boat at %f %f %f, current yaw %f %f %f, is back: %s!", hitPos.x, hitPos.y, hitPos.z, facing.x, facing.y, facing.z, back)));
     if (!back) {
       if (super.interact(player, hand)) {
         return ActionResult.SUCCESS;
@@ -91,25 +53,17 @@ public class BlockCarrierBoatEntity extends BoatEntity implements PositionInitia
     }
 
     if (!world.isClient) {
-      openInventory(player);
+      interactRear(player, hand);
       return ActionResult.SUCCESS;
     }
     return super.interactAt(player, hitPos, hand);
   }
 
-  @Override
-  public void openCustomInventory(ServerPlayerEntity player) {
-    openInventory(player);
-  }
-
-  private void openInventory(PlayerEntity player) {
-    player.openContainer(new ClientDummyContainerProvider((syncId, inv, owner) ->
-        new GenericContainer(ContainerType.GENERIC_9X3, syncId, inv, inventory, 3), getName()));
-    player.increaseStat(KayakStats.CARRIER_BOAT_INTERACTION, 1);
-  }
+  protected abstract void interactRear(PlayerEntity player, Hand hand);
 
   @Override
   public void updatePassengerPosition(Entity entity_1) {
+    // Make it only apply to one passenger
     if (this.hasPassenger(entity_1)) {
       float float_2 = (float) ((this.removed ? 0.009999999776482582D : this.getMountedHeightOffset()) + entity_1.getHeightOffset());
 
@@ -131,27 +85,5 @@ public class BlockCarrierBoatEntity extends BoatEntity implements PositionInitia
     return this.getPassengerList().size() < 1;
   }
 
-  @Override
-  public void dropCustom(DamageSource source) {
-    if (!world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-      return;
-    }
-    for (ItemStack stack : KayakInventoryTools.iterate(inventory)) {
-      dropStack(stack);
-    }
-  }
 
-  @Override
-  protected void writeCustomDataToTag(CompoundTag tag) {
-    super.writeCustomDataToTag(tag);
-    tag.put("carriedState", NbtHelper.fromBlockState(getCarriedState()));
-    tag.put("Inventory", KayakInventoryTools.writeBasicInventory(inventory));
-  }
-
-  @Override
-  protected void readCustomDataFromTag(CompoundTag tag) {
-    super.readCustomDataFromTag(tag);
-    setCarriedState(NbtHelper.toBlockState(tag.getCompound("carriedState")));
-    KayakInventoryTools.loadBasicInventory(inventory, tag.getList("Inventory", NbtType.COMPOUND));
-  }
 }
