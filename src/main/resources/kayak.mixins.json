@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.github.liachmodded.kayak.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BaseHorseEntityMixin",
+    "BoatEntityAccess",
+    "BoatEntityMixin",
+    "ServerPlayNetworkHandlerMixin"
+  ],
+  "client": [
+    "client.ClientPlayerInteractionManagerMixin",
+    "client.ClientPlayNetworkHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

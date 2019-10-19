@@ -1,3 +1,7 @@
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+
 plugins {
     id 'fabric-loom' version '0.2.5-SNAPSHOT'
     id 'maven-publish'
@@ -25,12 +29,9 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarnMappings}"
     modCompile "net.fabricmc:fabric-loader:${project.loaderVersion}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    // modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
+    modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
 
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
-
+    compileOnly "org.checkerframework:checker-qual:2.11.0"
     annotationProcessor 'net.fabricmc:fabric-mixin-compile-extensions:0.1.0.+'
 }
 
@@ -42,6 +43,12 @@ sourceSets {
         compileClasspath += configurations.minecraftNamed
     }
     data {
+        compileClasspath += sourceSets.code.compileClasspath
+        compileClasspath += sourceSets.code.output
+        runtimeClasspath += sourceSets.code.compileClasspath
+        runtimeClasspath += sourceSets.code.output
+    }
+    main {
         compileClasspath += sourceSets.code.compileClasspath
         compileClasspath += sourceSets.code.output
         runtimeClasspath += sourceSets.code.compileClasspath
@@ -59,17 +66,37 @@ license {
 // ensure that the encoding is set to UTF-8, no matter what the system default is
 // this fixes some edge cases with special characters not displaying correctly
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+def refmaps = new ArrayList<String>()
+def mergedRefmap = file("$buildDir/mergeRefmaps/$project.minecraft.refmapName")
+
+task mergeRefmaps() {
+    outputs.file mergedRefmap
+    doLast {
+        def result = new JsonObject()
+        for (def fileName : refmaps) {
+            def file = project.file(fileName)
+            if (file.exists()) {
+                merge(result, new JsonParser().parse(file.text).getAsJsonObject())
+            }
+        }
+        mergedRefmap.text = new GsonBuilder().setPrettyPrinting().create().toJson(result)
+    }
+}
+
 tasks.withType(JavaCompile) {
+    tasks.mergeRefmaps.dependsOn it
     options.encoding = "UTF-8"
     // Loom is just so cursed that it does not handle extra source sets nicely
     options.annotationProcessorPath += configurations.annotationProcessor
     doFirst {
         def args = options.compilerArgs
         project.minecraft {
+            def refmap = new File(destinationDir, refmapName).canonicalPath
             args.add "-AinMapFileNamedIntermediary=" + mappingsProvider.MAPPINGS_TINY.canonicalPath
             args.add "-AoutMapFileNamedIntermediary=" + mappingsProvider.MAPPINGS_MIXIN_EXPORT.canonicalPath
-            args.add "-AoutRefMapFile=" + new File(destinationDir, refmapName).canonicalPath
+            args.add "-AoutRefMapFile=" + refmap
             args.add "-AdefaultObfuscationEnv=named:intermediary"
+            refmaps.add refmap
         }
     }
 }
@@ -129,8 +156,8 @@ task generateData(type: JavaExec) {
 processResources {
     from(generateData.outputs.files) {
         include "/data/"
+        include "/assets/"
     }
-    from sourceSets.code.resources.srcDirs
 
     inputs.properties "version": project.version, "description": project.description
 
@@ -172,8 +199,15 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
 }
 
 jar {
-    dependsOn generateData
-    from sourceSets.code.output
+    duplicatesStrategy = DuplicatesStrategy.WARN
+
+    from(mergeRefmaps.outputs.files) {
+        include project.minecraft.refmapName
+    }
+    from(sourceSets.code.output) {
+        exclude project.minecraft.refmapName
+    }
+
     from "LICENSE"
 }
 
@@ -297,4 +331,24 @@ tasks.withType(Jar) {
 
 static boolean isNullOrEmpty(String st) {
     return st == null || st.isEmpty()
+}
+
+static void merge(JsonObject base, JsonObject head) {
+    for (def entry : head.entrySet()) {
+        if (base.has(entry.key)) {
+            def oneElement = base.get(entry.key)
+            if (oneElement != entry.value) {
+                if (oneElement.isJsonArray() && entry.value.isJsonArray()) {
+                    oneElement.getAsJsonArray().addAll(entry.value.getAsJsonArray())
+                } else if (oneElement.isJsonObject() && entry.value.isJsonObject()) {
+                    merge(oneElement.getAsJsonObject(), entry.value.getAsJsonObject())
+                } else {
+                    throw new UnsupportedOperationException("Conflicting key " + entry.key + " in json " + base + " and " + head)
+                }
+            }
+            // merge
+        } else {
+            base.add(entry.key, entry.value)
+        }
+    }
 }
