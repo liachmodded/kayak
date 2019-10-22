@@ -7,7 +7,6 @@ package com.github.liachmodded.kayak.ui;
 
 import com.github.liachmodded.kayak.Kayak;
 import com.github.liachmodded.kayak.entity.FurnaceCarrierBoatEntity;
-import com.github.liachmodded.kayak.item.inventory.KayakInventoryTools;
 import com.github.liachmodded.kayak.ui.property.KayakPropertyFactory;
 import com.google.common.base.Preconditions;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
@@ -16,11 +15,11 @@ import net.minecraft.container.Slot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.BasicInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.math.MathHelper;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class FurnaceBoatContainer extends InventoryContainer {
@@ -34,10 +33,9 @@ public class FurnaceBoatContainer extends InventoryContainer {
     addSlots(inventory, playerInventory);
   }
 
-  public static void open(PlayerEntity player, FurnaceCarrierBoatEntity boat, Inventory inventory) {
+  public static void open(PlayerEntity player, FurnaceCarrierBoatEntity boat) {
     ContainerProviderRegistry.INSTANCE.openContainer(KayakContainerProviders.FURNACE_BOAT, player, buf -> {
       buf.writeVarInt(boat.getEntityId());
-      KayakInventoryTools.toPacket(inventory, buf);
     });
   }
 
@@ -48,9 +46,9 @@ public class FurnaceBoatContainer extends InventoryContainer {
       Kayak.LOGGER.warn("Invalid entity network id {} received!", entityId);
       return null;
     }
-    Inventory inventory = new BasicInventory(1);
-    KayakInventoryTools.fromPacket(inventory, buf);
-    return new FurnaceBoatContainer(syncId, player.inventory, inventory, (FurnaceCarrierBoatEntity) entity);
+    FurnaceCarrierBoatEntity boat = (FurnaceCarrierBoatEntity) entity;
+    // Cannot use default inventory because otherwise it is just discarded by fabric container api
+    return new FurnaceBoatContainer(syncId, player.inventory, boat.getBackingInventory(), boat);
   }
 
   public FurnaceCarrierBoatEntity getBoat() {
@@ -58,7 +56,7 @@ public class FurnaceBoatContainer extends InventoryContainer {
   }
 
   public int getFuelProgress() {
-    return boat.getFuel() * 13 / FurnaceCarrierBoatEntity.FUEL_CONSUMPTION_THRESHOLD;
+    return MathHelper.clamp(boat.getFuel() * 13 / FurnaceCarrierBoatEntity.FUEL_CONSUMPTION_THRESHOLD, 0, 13);
   }
 
   @Override
@@ -66,8 +64,7 @@ public class FurnaceBoatContainer extends InventoryContainer {
     return 1;
   }
 
-  @Override
-  protected void addSlots(Inventory inventory_1, PlayerInventory playerInventory_1) {
+  private void addSlots(Inventory inventory_1, PlayerInventory playerInventory_1) {
     this.addSlot(new Slot(inventory_1, 0, 56, 53) {
       @Override
       public boolean canInsert(ItemStack itemStack_1) {

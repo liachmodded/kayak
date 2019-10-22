@@ -47,7 +47,7 @@ public class FurnaceBoatScreen extends AbstractContainerScreen<FurnaceBoatContai
       this.blit(int_3 + 56, int_4 + 36 + 12 - int_6, 176, 12 - int_6, 14, int_6 + 1);
     }
 
-//      int_6 = ((AbstractFurnaceContainer)this.container).getCookProgress();
-//      this.blit(int_3 + 79, int_4 + 34, 176, 14, int_6 + 1, 16);
+//    int_6 = ((AbstractFurnaceContainer)this.container).getCookProgress();
+//    this.blit(int_3 + 79, int_4 + 34, 176, 14, int_6 + 1, 16);
   }
 }

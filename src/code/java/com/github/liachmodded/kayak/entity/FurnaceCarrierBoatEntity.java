@@ -19,18 +19,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity implements PitchableBoat {
 
-  public static final int FUEL_CONSUMPTION_THRESHOLD = 300;
+  public static final int FUEL_CONSUMPTION_THRESHOLD = 3000;
   private static final BlockState FURNACE = Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH);
   private static final BlockState LIT_FURNACE = FURNACE.with(AbstractFurnaceBlock.LIT, true);
   private static final TrackedData<Integer> FUEL = DataTracker.registerData(FurnaceCarrierBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
-  private int lastFuel;
+  private static final TrackedData<Integer> INCLINATION = DataTracker
+      .registerData(FurnaceCarrierBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+  private int lastInclination;
 
   public FurnaceCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1, new BasicInventory(1));
@@ -40,6 +45,7 @@ public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity impleme
   protected void initDataTracker() {
     super.initDataTracker();
     dataTracker.startTracking(FUEL, 0);
+    dataTracker.startTracking(INCLINATION, 0);
   }
 
   @Override
@@ -49,6 +55,14 @@ public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity impleme
     } else {
       setFuel(0);
     }
+
+    int diff = getFuel() - getInclination();
+    if (diff > 0) {
+      setInclination(getInclination() + Math.max(1, (int) (diff * 0.02f)));
+    } else if (diff < 0) {
+      setInclination(getInclination() + Math.min(-1, (int) (diff * 0.02f)));
+    }
+
     while (getFuel() <= FUEL_CONSUMPTION_THRESHOLD) {
       ItemStack fuel = inventory.getInvStack(0);
       if (fuel.isEmpty()) {
@@ -64,11 +78,14 @@ public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity impleme
 
     super.tick();
 
-    if (getFuel() > 0 && random.nextInt(7) == 0) {
-      KayakEntityTools.fuzzParticle(world, ParticleTypes.SMOKE, getX(), getY(), getZ(), 0.3, 0.4, random);
+    // TODO more cool stuff with fuel
+
+    if (getFuel() > 0 && random.nextInt(5) == 0) {
+      KayakEntityTools.fuzzParticle(world, ParticleTypes.SMOKE, getX(), getY(), getZ(), 0.3, 0.08, random);
+      world.playSound(getX(), getY(), getZ(), SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
     }
 
-    lastFuel = getFuel();
+    lastInclination = getInclination();
   }
 
   public int getFuel() {
@@ -79,19 +96,42 @@ public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity impleme
     dataTracker.set(FUEL, value);
   }
 
+  public int getInclination() {
+    return dataTracker.get(INCLINATION);
+  }
+
+  public void setInclination(int value) {
+    dataTracker.set(INCLINATION, value);
+  }
+
   @Override
-  public float getRenderPitch(float partialTicks) {
-    return 3f * MathHelper.lerp(partialTicks, lastFuel, getFuel()) / FUEL_CONSUMPTION_THRESHOLD;
+  public float getRenderPitch(float tickDelta) {
+    return 5f * MathHelper.clamp(MathHelper.lerp(tickDelta, lastInclination, getInclination()), 0, FUEL_CONSUMPTION_THRESHOLD)
+        / FUEL_CONSUMPTION_THRESHOLD;
   }
 
   @Override
   protected void openInventory(PlayerEntity player) {
-    FurnaceBoatContainer.open(player, this, inventory);
+    FurnaceBoatContainer.open(player, this);
     player.increaseStat(KayakStats.FURNACE_CARRIER_BOAT_INTERACTION, 1);
   }
 
   @Override
   public BlockState getCarriedState() {
     return getFuel() > 0 ? LIT_FURNACE : FURNACE;
+  }
+
+  @Override
+  protected void writeCustomDataToTag(CompoundTag tag) {
+    super.writeCustomDataToTag(tag);
+    tag.putInt("Fuel", getFuel());
+    tag.putInt("Inclination", getInclination());
+  }
+
+  @Override
+  protected void readCustomDataFromTag(CompoundTag tag) {
+    super.readCustomDataFromTag(tag);
+    setFuel(tag.getInt("Fuel"));
+    setInclination(tag.getInt("Inclination"));
   }
 }

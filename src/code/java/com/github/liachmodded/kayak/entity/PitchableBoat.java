@@ -7,6 +7,6 @@ package com.github.liachmodded.kayak.entity;
 
 public interface PitchableBoat {
 
-  float getRenderPitch(float partialTicks);
+  float getRenderPitch(float tickDelta);
 
 }

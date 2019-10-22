@@ -19,7 +19,7 @@ public abstract class InventoryContainer extends Container {
   private final PlayerInventory playerInventory;
 
   protected InventoryContainer(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-    super(ContainerType.ANVIL, syncId);
+    super(null, syncId);
     this.inventory = inventory;
     this.playerInventory = playerInventory;
     inventory.onInvOpen(playerInventory.player);
@@ -27,26 +27,6 @@ public abstract class InventoryContainer extends Container {
 
   public PlayerInventory getPlayerInventory() {
     return playerInventory;
-  }
-
-  protected void addSlots(Inventory inventory, PlayerInventory playerInventory) {
-    int int_6;
-    int int_5;
-    for (int_6 = 0; int_6 < 3; ++int_6) {
-      for (int_5 = 0; int_5 < 3; ++int_5) {
-        this.addSlot(new Slot(inventory, int_5 + int_6 * 3, 62 + int_5 * 18, 17 + int_6 * 18));
-      }
-    }
-
-    for (int_6 = 0; int_6 < 3; ++int_6) {
-      for (int_5 = 0; int_5 < 9; ++int_5) {
-        this.addSlot(new Slot(playerInventory, int_5 + int_6 * 9 + 9, 8 + int_5 * 18, 84 + int_6 * 18));
-      }
-    }
-
-    for (int_6 = 0; int_6 < 9; ++int_6) {
-      this.addSlot(new Slot(playerInventory, int_6, 8 + int_6 * 18, 142));
-    }
   }
 
   protected abstract int getSize();
