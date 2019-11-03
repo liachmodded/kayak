@@ -6,7 +6,6 @@
 package com.github.liachmodded.kayak.mixin.client;
 
 import com.github.liachmodded.kayak.Kayak;
-import com.github.liachmodded.kayak.entity.PositionInitializerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.packet.EntitySpawnS2CPacket;
 import net.minecraft.client.world.ClientWorld;
@@ -39,9 +38,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
         return;
       }
 
-      if (entity instanceof PositionInitializerEntity) {
-        ((PositionInitializerEntity) entity).init(x, y, z);
-      }
+      entity.setPosition(x, y, z);
 
       int networkId = packet.getId();
       entity.updateTrackedPosition(x, y, z);

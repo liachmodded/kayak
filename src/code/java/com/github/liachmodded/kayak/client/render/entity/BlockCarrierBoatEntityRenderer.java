@@ -5,16 +5,16 @@
  */
 package com.github.liachmodded.kayak.client.render.entity;
 
-import com.github.liachmodded.kayak.entity.BlockCarrierBoatEntity;
+import com.github.liachmodded.kayak.entity.CarrierBoatEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LayeredVertexConsumerStorage;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.util.math.MatrixStack;
+import net.minecraft.client.util.math.MatrixStack;
 
-public final class BlockCarrierBoatEntityRenderer<T extends BlockCarrierBoatEntity> extends AbstractBoatEntityRenderer<T> {
+public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> extends AbstractBoatEntityRenderer<T> {
 
   public BlockCarrierBoatEntityRenderer(EntityRenderDispatcher entityRenderDispatcher_1) {
     super(entityRenderDispatcher_1);
@@ -36,7 +36,7 @@ public final class BlockCarrierBoatEntityRenderer<T extends BlockCarrierBoatEnti
       matrixStack_1.translate(-0.5D, (blockOffset - 8) / 16.0F, 0.5D);
       matrixStack_1.translate(0.7D, 0D, 0D);
       MinecraftClient.getInstance().getBlockRenderManager()
-          .renderDynamic(state, matrixStack_1, layeredVertexConsumerStorage_1, lightmapIndex, OverlayTexture.field_21444);
+          .renderOnEntity(state, matrixStack_1, layeredVertexConsumerStorage_1, lightmapIndex, OverlayTexture.DEFAULT_UV);
       matrixStack_1.pop();
     }
   }

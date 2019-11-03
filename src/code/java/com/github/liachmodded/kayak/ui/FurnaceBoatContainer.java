@@ -6,7 +6,7 @@
 package com.github.liachmodded.kayak.ui;
 
 import com.github.liachmodded.kayak.Kayak;
-import com.github.liachmodded.kayak.entity.FurnaceCarrierBoatEntity;
+import com.github.liachmodded.kayak.entity.FurnaceBoatEntity;
 import com.github.liachmodded.kayak.ui.property.KayakPropertyFactory;
 import com.google.common.base.Preconditions;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
@@ -24,16 +24,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class FurnaceBoatContainer extends InventoryContainer {
 
-  private final FurnaceCarrierBoatEntity boat;
+  private final FurnaceBoatEntity boat;
 
-  protected FurnaceBoatContainer(int syncId, PlayerInventory playerInventory, Inventory inventory, FurnaceCarrierBoatEntity boat) {
+  protected FurnaceBoatContainer(int syncId, PlayerInventory playerInventory, Inventory inventory, FurnaceBoatEntity boat) {
     super(syncId, playerInventory, inventory);
     this.boat = Preconditions.checkNotNull(boat);
 
     addSlots(inventory, playerInventory);
   }
 
-  public static void open(PlayerEntity player, FurnaceCarrierBoatEntity boat) {
+  public static void open(PlayerEntity player, FurnaceBoatEntity boat) {
     ContainerProviderRegistry.INSTANCE.openContainer(KayakContainerProviders.FURNACE_BOAT, player, buf -> {
       buf.writeVarInt(boat.getEntityId());
     });
@@ -42,21 +42,21 @@ public class FurnaceBoatContainer extends InventoryContainer {
   public static @Nullable FurnaceBoatContainer fromPacket(int syncId, Identifier guiId, PlayerEntity player, PacketByteBuf buf) {
     int entityId = buf.readVarInt();
     Entity entity = player.world.getEntityById(entityId);
-    if (!(entity instanceof FurnaceCarrierBoatEntity)) {
+    if (!(entity instanceof FurnaceBoatEntity)) {
       Kayak.LOGGER.warn("Invalid entity network id {} received!", entityId);
       return null;
     }
-    FurnaceCarrierBoatEntity boat = (FurnaceCarrierBoatEntity) entity;
+    FurnaceBoatEntity boat = (FurnaceBoatEntity) entity;
     // Cannot use default inventory because otherwise it is just discarded by fabric container api
     return new FurnaceBoatContainer(syncId, player.inventory, boat.getBackingInventory(), boat);
   }
 
-  public FurnaceCarrierBoatEntity getBoat() {
+  public FurnaceBoatEntity getBoat() {
     return boat;
   }
 
   public int getFuelProgress() {
-    return MathHelper.clamp(boat.getFuel() * 13 / FurnaceCarrierBoatEntity.FUEL_CONSUMPTION_THRESHOLD, 0, 13);
+    return MathHelper.clamp(boat.getFuel() * 13 / FurnaceBoatEntity.FUEL_CONSUMPTION_THRESHOLD, 0, 13);
   }
 
   @Override

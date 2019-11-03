@@ -14,6 +14,7 @@ import net.minecraft.util.registry.Registry;
 public final class KayakStats {
 
   public static final Identifier CHEST_CARRIER_BOAT_INTERACTION = register("chest_carrier_boat_interaction", StatFormatter.DEFAULT);
+  public static final Identifier HOPPER_CARRIER_BOAT_INTERACTION = register("hopper_carrier_boat_interaction", StatFormatter.DEFAULT);
   public static final Identifier FURNACE_CARRIER_BOAT_INTERACTION = register("furnace_carrier_boat_interaction", StatFormatter.DEFAULT);
 
   private KayakStats() {}

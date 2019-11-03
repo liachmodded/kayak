@@ -48,20 +48,40 @@ public final class KayakRecipesProvider implements DataProvider {
     this.root = generator;
   }
 
+  private void generate(Consumer<RecipeJsonProvider> consumer) {
+    for (Entry<BoatEntity.Type, Item> entry : KayakItems.CHEST_BOAT_ITEMS.entrySet()) {
+      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
+      ShapelessRecipeJsonFactory.create(entry.getValue())
+          .input(vanillaBoat)
+          .input(Items.CHEST)
+          .criterion("has_boat", has(vanillaBoat))
+          .offerTo(consumer);
+    }
+
+    for (Entry<BoatEntity.Type, Item> entry : KayakItems.HOPPER_BOAT_ITEMS.entrySet()) {
+      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
+      ShapelessRecipeJsonFactory.create(entry.getValue())
+          .input(vanillaBoat)
+          .input(Items.HOPPER)
+          .criterion("has_boat", has(vanillaBoat))
+          .offerTo(consumer);
+    }
+  }
+
   @Override
   public void run(DataCache cache) {
-    Path path_1 = this.root.getOutput();
-    Set<Identifier> set_1 = Sets.newHashSet();
-    this.generate((recipeJsonProvider_1) -> {
-      if (!set_1.add(recipeJsonProvider_1.getRecipeId())) {
-        throw new IllegalStateException("Duplicate recipe " + recipeJsonProvider_1.getRecipeId());
+    Path output = this.root.getOutput();
+    Set<Identifier> set = Sets.newHashSet();
+    this.generate((recipeJsonProvider) -> {
+      if (!set.add(recipeJsonProvider.getRecipeId())) {
+        throw new IllegalStateException("Duplicate recipe " + recipeJsonProvider.getRecipeId());
       }
-      this.writeJson(cache, recipeJsonProvider_1.toJson(), path_1.resolve(
-          "data/" + recipeJsonProvider_1.getRecipeId().getNamespace() + "/recipes/" + recipeJsonProvider_1.getRecipeId().getPath() + ".json"));
-      JsonObject jsonObject_1 = recipeJsonProvider_1.toAdvancementJson();
+      this.writeJson(cache, recipeJsonProvider.toJson(), output.resolve(
+          "data/" + recipeJsonProvider.getRecipeId().getNamespace() + "/recipes/" + recipeJsonProvider.getRecipeId().getPath() + ".json"));
+      JsonObject jsonObject_1 = recipeJsonProvider.toAdvancementJson();
       if (jsonObject_1 != null) {
-        this.writeJson(cache, jsonObject_1, path_1.resolve(
-            "data/" + recipeJsonProvider_1.getAdvancementId().getNamespace() + "/advancements/" + recipeJsonProvider_1.getAdvancementId().getPath()
+        this.writeJson(cache, jsonObject_1, output.resolve(
+            "data/" + recipeJsonProvider.getAdvancementId().getNamespace() + "/advancements/" + recipeJsonProvider.getAdvancementId().getPath()
                 + ".json"));
       }
     });
@@ -84,23 +104,8 @@ public final class KayakRecipesProvider implements DataProvider {
     }
   }
 
-  private void generate(Consumer<RecipeJsonProvider> consumer) {
-    for (Entry<BoatEntity.Type, Item> entry : KayakItems.BOAT_ITEMS.entrySet()) {
-      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
-      ShapelessRecipeJsonFactory.create(entry.getValue())
-          .input(vanillaBoat)
-          .input(Items.CHEST)
-          .criterion("has_boat", has(vanillaBoat))
-          .offerTo(consumer);
-    }
-  }
-
   private EnterBlockCriterion.Conditions entered(Block block_1) {
     return new EnterBlockCriterion.Conditions(block_1, StatePredicate.ANY);
-  }
-
-  private InventoryChangedCriterion.Conditions hasEnough(NumberRange.IntRange numberRange$IntRange_1, ItemConvertible itemConvertible_1) {
-    return this.has(ItemPredicate.Builder.create().item(itemConvertible_1).count(numberRange$IntRange_1).build());
   }
 
   private InventoryChangedCriterion.Conditions has(ItemConvertible itemConvertible_1) {

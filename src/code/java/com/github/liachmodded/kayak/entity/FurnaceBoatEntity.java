@@ -27,17 +27,17 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class FurnaceCarrierBoatEntity extends InventoryCarrierBoatEntity implements PitchableBoat {
+public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements PitchableBoat {
 
   public static final int FUEL_CONSUMPTION_THRESHOLD = 3000;
   private static final BlockState FURNACE = Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, Direction.SOUTH);
   private static final BlockState LIT_FURNACE = FURNACE.with(AbstractFurnaceBlock.LIT, true);
-  private static final TrackedData<Integer> FUEL = DataTracker.registerData(FurnaceCarrierBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+  private static final TrackedData<Integer> FUEL = DataTracker.registerData(FurnaceBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
   private static final TrackedData<Integer> INCLINATION = DataTracker
-      .registerData(FurnaceCarrierBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
+      .registerData(FurnaceBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
   private int lastInclination;
 
-  public FurnaceCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
+  public FurnaceBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1, new BasicInventory(1));
   }
 

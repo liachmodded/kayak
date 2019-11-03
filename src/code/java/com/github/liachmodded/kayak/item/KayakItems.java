@@ -19,16 +19,21 @@ import net.minecraft.util.registry.Registry;
 
 public final class KayakItems {
 
-  public static final Map<Type, Item> BOAT_ITEMS;
+  public static final Map<Type, Item> CHEST_BOAT_ITEMS;
+  public static final Map<Type, Item> HOPPER_BOAT_ITEMS;
 
   static {
-    Map<Type, Item> boats = new EnumMap<>(Type.class);
+    Map<Type, Item> chestBoats = new EnumMap<>(Type.class);
+    Map<Type, Item> hopperBoats = new EnumMap<>(Type.class);
     Settings settings = new Settings().maxCount(1).group(ItemGroup.TRANSPORTATION);
     for (Type boatType : Type.values()) {
-      boats.put(boatType,
-          register(boatType.getName() + "_carrier_boat", new BlockCarrierBoatItem(KayakEntities.CHEST_CARRIER_BOAT, boatType, settings)));
+      chestBoats.put(boatType,
+          register(boatType.getName() + "_chest_boat", new CarrierBoatItem(KayakEntities.CHEST_BOAT, boatType, settings)));
+      hopperBoats.put(boatType,
+          register(boatType.getName() + "_hopper_boat", new CarrierBoatItem(KayakEntities.HOPPER_BOAT, boatType, settings)));
     }
-    BOAT_ITEMS = Collections.unmodifiableMap(boats);
+    CHEST_BOAT_ITEMS = Collections.unmodifiableMap(chestBoats);
+    HOPPER_BOAT_ITEMS = Collections.unmodifiableMap(hopperBoats);
   }
 
   private KayakItems() {}

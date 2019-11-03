@@ -18,15 +18,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public abstract class BlockCarrierBoatEntity extends BoatEntity implements PositionInitializerEntity {
+public abstract class CarrierBoatEntity extends BoatEntity {
 
-  protected BlockCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
+  protected CarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1);
   }
 
   @Override
-  public void init(double x, double y, double z) {
-    this.setPosition(x, y, z);
+  public void setPosition(double x, double y, double z) {
+    super.setPosition(x, y, z);
     this.setVelocity(Vec3d.ZERO);
     this.prevX = x;
     this.prevY = y;
@@ -77,7 +77,7 @@ public abstract class BlockCarrierBoatEntity extends BoatEntity implements Posit
 
   @Override
   public Item asItem() {
-    return KayakItems.BOAT_ITEMS.get(getBoatType());
+    return KayakItems.CHEST_BOAT_ITEMS.get(getBoatType());
   }
 
   @Override

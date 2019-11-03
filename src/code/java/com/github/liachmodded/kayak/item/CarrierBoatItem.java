@@ -5,7 +5,7 @@
  */
 package com.github.liachmodded.kayak.item;
 
-import com.github.liachmodded.kayak.entity.BlockCarrierBoatEntity;
+import com.github.liachmodded.kayak.entity.CarrierBoatEntity;
 import com.google.common.base.Preconditions;
 import java.util.List;
 import java.util.function.Predicate;
@@ -25,7 +25,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RayTraceContext;
 import net.minecraft.world.World;
 
-public class BlockCarrierBoatItem extends Item {
+public class CarrierBoatItem extends Item {
 
   private static final Predicate<Entity> COLLISION_CHECK;
 
@@ -33,10 +33,10 @@ public class BlockCarrierBoatItem extends Item {
     COLLISION_CHECK = EntityPredicates.EXCEPT_SPECTATOR.and(Entity::collides);
   }
 
-  private final EntityType<? extends BlockCarrierBoatEntity> entityType;
+  private final EntityType<? extends CarrierBoatEntity> entityType;
   private final BoatEntity.Type type;
 
-  public BlockCarrierBoatItem(EntityType<? extends BlockCarrierBoatEntity> entityType, BoatEntity.Type type, Settings settings) {
+  public CarrierBoatItem(EntityType<? extends CarrierBoatEntity> entityType, BoatEntity.Type type, Settings settings) {
     super(settings);
     this.entityType = entityType;
     this.type = type;
@@ -63,8 +63,8 @@ public class BlockCarrierBoatItem extends Item {
       }
 
       if (hitResult.getType() == HitResult.Type.BLOCK) {
-        BlockCarrierBoatEntity boat = Preconditions.checkNotNull(entityType.create(world));
-        boat.init(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        CarrierBoatEntity boat = Preconditions.checkNotNull(entityType.create(world));
+        boat.setPosition(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         boat.setBoatType(this.type);
         boat.yaw = player.yaw;
         if (!world.doesNotCollide(boat, boat.getBoundingBox().expand(-0.1D))) {
@@ -78,7 +78,7 @@ public class BlockCarrierBoatItem extends Item {
           }
 
           player.incrementStat(Stats.USED.getOrCreateStat(this));
-          return TypedActionResult.successWithSwing(stack);
+          return TypedActionResult.success(stack);
         }
       } else {
         return TypedActionResult.pass(stack);

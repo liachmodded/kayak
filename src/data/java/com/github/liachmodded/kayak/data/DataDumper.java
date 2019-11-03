@@ -20,6 +20,8 @@ public final class DataDumper {
     dataGenerator.install(new KayakAdvancementProvider(dataGenerator));
     dataGenerator.install(new KayakRecipesProvider(dataGenerator));
     dataGenerator.install(new KayakItemModelProvider(dataGenerator));
+    dataGenerator.install(new KayakItemTagProvider(dataGenerator));
+    dataGenerator.install(new KayakEntityTagProvider(dataGenerator));
 
     dataGenerator.run();
   }

@@ -16,13 +16,12 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.model.BoatEntityModel;
-import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.BoatEntity.Type;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MatrixStack;
 import net.minecraft.util.math.Quaternion;
 
 public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends EntityRenderer<T> {
@@ -90,10 +89,10 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
     renderContent(boatEntity_1, double_1, double_2, double_3, float_1, float_2, matrixStack_1, layeredVertexConsumerStorage_1);
 
     this.model.method_22952(boatEntity_1, float_2, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-    VertexConsumer vertexConsumer_1 = layeredVertexConsumerStorage_1.getBuffer(this.model.method_23500(this.getTexture(boatEntity_1)));
-    this.model.renderItem(matrixStack_1, vertexConsumer_1, int_1, OverlayTexture.field_21444, 1.0F, 1.0F, 1.0F);
+    VertexConsumer vertexConsumer_1 = layeredVertexConsumerStorage_1.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
+    this.model.render(matrixStack_1, vertexConsumer_1, int_1, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F);
     VertexConsumer vertexConsumer_2 = layeredVertexConsumerStorage_1.getBuffer(RenderLayer.getWaterMask());
-    this.model.method_22954().render(matrixStack_1, vertexConsumer_2, 0.0625F, int_1, OverlayTexture.field_21444, null);
+    this.model.getBottom().render(matrixStack_1, vertexConsumer_2, 0.0625F, int_1, OverlayTexture.DEFAULT_UV, null);
     matrixStack_1.pop();
     super.render(boatEntity_1, double_1, double_2, double_3, float_1, float_2, matrixStack_1, layeredVertexConsumerStorage_1);
   }

@@ -15,11 +15,13 @@ public final class KayakClient implements ClientModInitializer {
 
   @Override
   public void onInitializeClient() {
-    EntityRendererRegistry.INSTANCE.register(KayakEntities.BLOCK_CARRIER_BOAT,
+    EntityRendererRegistry.INSTANCE.register(KayakEntities.BLOCK_BOAT,
         (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
-    EntityRendererRegistry.INSTANCE.register(KayakEntities.CHEST_CARRIER_BOAT,
+    EntityRendererRegistry.INSTANCE.register(KayakEntities.CHEST_BOAT,
         (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
-    EntityRendererRegistry.INSTANCE.register(KayakEntities.FURNACE_CARRIER_BOAT,
+    EntityRendererRegistry.INSTANCE.register(KayakEntities.FURNACE_BOAT,
+        (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
+    EntityRendererRegistry.INSTANCE.register(KayakEntities.HOPPER_BOAT,
         (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
 
     KayakScreenProviders.init();

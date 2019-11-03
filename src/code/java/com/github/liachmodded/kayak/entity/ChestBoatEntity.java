@@ -17,9 +17,9 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.world.World;
 
-public class ChestCarrierBoatEntity extends InventoryCarrierBoatEntity {
+public class ChestBoatEntity extends InventoryCarrierBoatEntity {
 
-  public ChestCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
+  public ChestBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1, new BasicInventory(27));
   }
 

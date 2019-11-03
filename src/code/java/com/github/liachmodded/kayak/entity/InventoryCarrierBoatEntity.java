@@ -21,7 +21,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-public abstract class InventoryCarrierBoatEntity extends BlockCarrierBoatEntity implements CustomDropBoat, CustomInventoryVehicle,
+public abstract class InventoryCarrierBoatEntity extends CarrierBoatEntity implements CustomDropBoat, CustomInventoryVehicle,
     ForwardingInventory {
 
   protected final Inventory inventory;

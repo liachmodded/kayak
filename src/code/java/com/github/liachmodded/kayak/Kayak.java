@@ -10,6 +10,7 @@ import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
 import com.github.liachmodded.kayak.ui.KayakContainerProviders;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.registry.CommandRegistry;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,5 +33,7 @@ public final class Kayak implements ModInitializer {
     KayakItems.init();
     KayakStats.init();
     KayakContainerProviders.init();
+
+    CommandRegistry.INSTANCE.register(false, new KayakCommand()::register);
   }
 }

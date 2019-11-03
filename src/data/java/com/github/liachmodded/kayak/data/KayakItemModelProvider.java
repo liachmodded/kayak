@@ -13,6 +13,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataGenerator;
@@ -36,11 +38,17 @@ public final class KayakItemModelProvider implements DataProvider {
 
   @Override
   public void run(DataCache cache) {
-    Path path_1 = this.root.getOutput();
+    Path path = this.root.getOutput();
 
-    for (Item item : KayakItems.BOAT_ITEMS.values()) {
+    Collection<Item> targets = new ArrayList<>();
+    targets.addAll(KayakItems.CHEST_BOAT_ITEMS.values());
+    targets.addAll(KayakItems.HOPPER_BOAT_ITEMS.values());
+
+    // add here
+
+    for (Item item : targets) {
       Identifier itemId = Registry.ITEM.getId(item);
-      writeJsonTo(cache, itemId, path_1);
+      writeJsonTo(cache, itemId, path);
     }
   }
 

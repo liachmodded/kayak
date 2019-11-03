@@ -19,13 +19,13 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class ArbitraryBlockCarrierBoatEntity extends BlockCarrierBoatEntity {
+public class CustomBlockBoatEntity extends CarrierBoatEntity {
 
   private static final BlockState AIR = Blocks.AIR.getDefaultState();
   private static final TrackedData<Optional<BlockState>> CARRIED_STATE = DataTracker
-      .registerData(ArbitraryBlockCarrierBoatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_STATE);
+      .registerData(CustomBlockBoatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_STATE);
 
-  protected ArbitraryBlockCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
+  protected CustomBlockBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
     super(entityType_1, world_1);
   }
 

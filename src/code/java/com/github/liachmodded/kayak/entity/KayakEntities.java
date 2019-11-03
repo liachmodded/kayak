@@ -6,6 +6,8 @@
 package com.github.liachmodded.kayak.entity;
 
 import com.github.liachmodded.kayak.Kayak;
+import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 import net.fabricmc.fabric.api.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCategory;
@@ -15,23 +17,33 @@ import net.minecraft.util.registry.Registry;
 
 public final class KayakEntities {
 
-  public static final EntityType<ChestCarrierBoatEntity> CHEST_CARRIER_BOAT = register("chest_carrier_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, ChestCarrierBoatEntity::new)
+  public static final EntityType<ChestBoatEntity> CHEST_BOAT = register("chest_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, ChestBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
-  public static final EntityType<ArbitraryBlockCarrierBoatEntity> BLOCK_CARRIER_BOAT = register("block_carrier_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, ArbitraryBlockCarrierBoatEntity::new)
+  public static final EntityType<HopperBoatEntity> HOPPER_BOAT = register("hopper_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, HopperBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
-  public static final EntityType<FurnaceCarrierBoatEntity> FURNACE_CARRIER_BOAT = register("furnace_carrier_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, FurnaceCarrierBoatEntity::new)
+  public static final EntityType<CustomBlockBoatEntity> BLOCK_BOAT = register("block_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, CustomBlockBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
+  );
+  public static final EntityType<FurnaceBoatEntity> FURNACE_BOAT = register("furnace_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, FurnaceBoatEntity::new)
+          .size(EntityDimensions.fixed(1.375F, 0.5625F))
+          .trackable(80, 3)
+          .build()
+  );
+
+  public static final Collection<EntityType<? extends CarrierBoatEntity>> CARRIER_BOATS = ImmutableList.of(
+      CHEST_BOAT, HOPPER_BOAT, BLOCK_BOAT, FURNACE_BOAT
   );
 
   private KayakEntities() {}
