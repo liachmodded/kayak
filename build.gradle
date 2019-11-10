@@ -32,7 +32,7 @@ dependencies {
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
 
     compileOnly "org.checkerframework:checker-qual:2.11.0"
-    annotationProcessor 'net.fabricmc:fabric-mixin-compile-extensions:0.1.0.+'
+    annotationProcessor 'net.fabricmc:fabric-mixin-compile-extensions:0.2.0.+'
 }
 
 sourceSets {
@@ -92,8 +92,8 @@ tasks.withType(JavaCompile) {
         def args = options.compilerArgs
         project.minecraft {
             def refmap = new File(destinationDir, refmapName).canonicalPath
-            args.add "-AinMapFileNamedIntermediary=" + mappingsProvider.MAPPINGS_TINY.canonicalPath
-            args.add "-AoutMapFileNamedIntermediary=" + mappingsProvider.MAPPINGS_MIXIN_EXPORT.canonicalPath
+            args.add "-AinMapFileNamedIntermediary=" + mappingsProvider.tinyMappings.canonicalPath
+            args.add "-AoutMapFileNamedIntermediary=" + mappingsProvider.mappingsMixinExport.canonicalPath
             args.add "-AoutRefMapFile=" + refmap
             args.add "-AdefaultObfuscationEnv=named:intermediary"
             refmaps.add refmap
