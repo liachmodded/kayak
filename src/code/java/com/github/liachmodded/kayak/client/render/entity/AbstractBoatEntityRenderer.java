@@ -9,10 +9,10 @@ import com.github.liachmodded.kayak.entity.PitchableBoat;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-import net.minecraft.client.render.LayeredVertexConsumerStorage;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.model.BoatEntityModel;
@@ -52,48 +52,46 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
     return TEXTURES.get(boatEntity_1.getBoatType());
   }
 
-  protected abstract void renderContent(T entity, double double_1, double double_2, double double_3, float float_1, float float_2,
-      MatrixStack matrixStack_1, LayeredVertexConsumerStorage layeredVertexConsumerStorage_1);
+  protected abstract void renderContent(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider,
+      int light);
 
   @Override
-  public void render(T boatEntity_1, double double_1, double double_2, double double_3, float float_1, float float_2, MatrixStack matrixStack_1,
-      LayeredVertexConsumerStorage layeredVertexConsumerStorage_1) {
-    matrixStack_1.push();
-    matrixStack_1.translate(0.0D, 0.375D, 0.0D);
-    matrixStack_1.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(180.0F - float_1));
-    float float_3 = (float) boatEntity_1.getDamageWobbleTicks() - float_2;
-    float float_4 = boatEntity_1.getDamageWobbleStrength() - float_2;
+  public void render(T boatEntity_1, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light) {
+    matrices.push();
+    matrices.translate(0.0D, 0.375D, 0.0D);
+    matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(180.0F - yaw));
+    float float_3 = (float) boatEntity_1.getDamageWobbleTicks() - tickDelta;
+    float float_4 = boatEntity_1.getDamageWobbleStrength() - tickDelta;
     if (float_4 < 0.0F) {
       float_4 = 0.0F;
     }
 
     if (float_3 > 0.0F) {
-      matrixStack_1.multiply(Vector3f.POSITIVE_X
+      matrices.multiply(Vector3f.POSITIVE_X
           .getRotationQuaternion(MathHelper.sin(float_3) * float_3 * float_4 / 10.0F * (float) boatEntity_1.getDamageWobbleSide()));
     }
 
-    float float_5 = boatEntity_1.interpolateBubbleWobble(float_2);
+    float float_5 = boatEntity_1.interpolateBubbleWobble(tickDelta);
     if (!MathHelper.approximatelyEquals(float_5, 0.0F)) {
-      matrixStack_1.multiply(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boatEntity_1.interpolateBubbleWobble(float_2), true));
+      matrices.multiply(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), boatEntity_1.interpolateBubbleWobble(tickDelta), true));
     }
 
     if (boatEntity_1 instanceof PitchableBoat) {
-      float pitch = ((PitchableBoat) boatEntity_1).getRenderPitch(float_2);
-      matrixStack_1.multiply(Vector3f.POSITIVE_X.getRotationQuaternion(pitch));
+      float pitch = ((PitchableBoat) boatEntity_1).getRenderPitch(tickDelta);
+      matrices.multiply(Vector3f.POSITIVE_X.getRotationQuaternion(pitch));
     }
 
-    matrixStack_1.scale(-1.0F, -1.0F, 1.0F);
-    int int_1 = boatEntity_1.getLightmapCoordinates();
-    matrixStack_1.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
+    matrices.scale(-1.0F, -1.0F, 1.0F);
+    matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
 
-    renderContent(boatEntity_1, double_1, double_2, double_3, float_1, float_2, matrixStack_1, layeredVertexConsumerStorage_1);
+    renderContent(boatEntity_1, yaw, tickDelta, matrices, vertexConsumerProvider, light);
 
-    this.model.method_22952(boatEntity_1, float_2, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-    VertexConsumer vertexConsumer_1 = layeredVertexConsumerStorage_1.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
-    this.model.render(matrixStack_1, vertexConsumer_1, int_1, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F);
-    VertexConsumer vertexConsumer_2 = layeredVertexConsumerStorage_1.getBuffer(RenderLayer.getWaterMask());
-    this.model.getBottom().render(matrixStack_1, vertexConsumer_2, 0.0625F, int_1, OverlayTexture.DEFAULT_UV, null);
-    matrixStack_1.pop();
-    super.render(boatEntity_1, double_1, double_2, double_3, float_1, float_2, matrixStack_1, layeredVertexConsumerStorage_1);
+    this.model.method_22952(boatEntity_1, tickDelta, 0.0F, -0.1F, 0.0F, 0.0F);
+    VertexConsumer vertexConsumer_1 = vertexConsumerProvider.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
+    this.model.render(matrices, vertexConsumer_1, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F);
+    VertexConsumer vertexConsumer_2 = vertexConsumerProvider.getBuffer(RenderLayer.getWaterMask());
+    this.model.getBottom().render(matrices, vertexConsumer_2, light, OverlayTexture.DEFAULT_UV, null);
+    matrices.pop();
+    super.render(boatEntity_1, yaw, tickDelta, matrices, vertexConsumerProvider, light);
   }
 }
