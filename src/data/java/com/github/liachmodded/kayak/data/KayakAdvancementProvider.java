@@ -30,12 +30,12 @@ import org.apache.logging.log4j.Logger;
 public final class KayakAdvancementProvider implements DataProvider {
 
   private static final Logger LOGGER = LogManager.getLogger();
-  private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-  private final DataGenerator root;
+  private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+  private final DataGenerator generator;
   private final List<Consumer<Consumer<Advancement>>> tabGenerators = ImmutableList.of(new KayakAdvancementTab());
 
-  public KayakAdvancementProvider(DataGenerator dataGenerator_1) {
-    this.root = dataGenerator_1;
+  public KayakAdvancementProvider(DataGenerator generator) {
+    this.generator = generator;
   }
 
   private static Path getOutput(Path path_1, Advancement advancement_1) {
@@ -44,22 +44,22 @@ public final class KayakAdvancementProvider implements DataProvider {
 
   @Override
   public void run(DataCache dataCache_1) {
-    Path path_1 = this.root.getOutput();
-    Set<Identifier> set_1 = Sets.newHashSet();
-    Consumer<Advancement> consumer_1 = (advancement_1) -> {
-      if (!set_1.add(advancement_1.getId())) {
-        throw new IllegalStateException("Duplicate advancement " + advancement_1.getId());
+    Path root = this.generator.getOutput();
+    Set<Identifier> written = Sets.newHashSet();
+    Consumer<Advancement> writer = advancement -> {
+      if (!written.add(advancement.getId())) {
+        throw new IllegalStateException("Duplicate advancement " + advancement.getId());
       }
-      Path path_2 = getOutput(path_1, advancement_1);
+      Path output = getOutput(root, advancement);
 
       try {
-        DataProvider.writeToPath(GSON, dataCache_1, advancement_1.createTask().toJson(), path_2);
-      } catch (IOException var6) {
-        LOGGER.error("Couldn't save advancement {}", path_2, var6);
+        DataProvider.writeToPath(GSON, dataCache_1, advancement.createTask().toJson(), output);
+      } catch (IOException ex) {
+        LOGGER.error("Couldn't save advancement {}", output, ex);
       }
     };
-    for (Consumer<Consumer<Advancement>> consumer_2 : this.tabGenerators) {
-      consumer_2.accept(consumer_1);
+    for (Consumer<Consumer<Advancement>> generator : this.tabGenerators) {
+      generator.accept(writer);
     }
   }
 

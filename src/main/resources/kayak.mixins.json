@@ -6,7 +6,9 @@
     "BaseHorseEntityMixin",
     "BoatEntityAccess",
     "BoatEntityMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "LivingEntityMixin",
+    "PlayerEntityMixin"
   ],
   "client": [
     "client.ClientPlayerInteractionManagerMixin",

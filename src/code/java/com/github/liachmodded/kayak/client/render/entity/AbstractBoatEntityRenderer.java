@@ -48,15 +48,15 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
   }
 
   @Override
-  public Identifier getTexture(T boatEntity_1) {
-    return TEXTURES.get(boatEntity_1.getBoatType());
+  public Identifier getTexture(T entity) {
+    return TEXTURES.get(entity.getBoatType());
   }
 
-  protected abstract void renderContent(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider,
+  protected abstract void renderContent(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
       int light);
 
   @Override
-  public void render(T boatEntity_1, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int light) {
+  public void render(T boatEntity_1, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
     matrices.push();
     matrices.translate(0.0D, 0.375D, 0.0D);
     matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(180.0F - yaw));
@@ -84,14 +84,14 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
     matrices.scale(-1.0F, -1.0F, 1.0F);
     matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
 
-    renderContent(boatEntity_1, yaw, tickDelta, matrices, vertexConsumerProvider, light);
+    renderContent(boatEntity_1, yaw, tickDelta, matrices, vertexConsumers, light);
 
     this.model.method_22952(boatEntity_1, tickDelta, 0.0F, -0.1F, 0.0F, 0.0F);
-    VertexConsumer vertexConsumer_1 = vertexConsumerProvider.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
+    VertexConsumer vertexConsumer_1 = vertexConsumers.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
     this.model.render(matrices, vertexConsumer_1, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F);
-    VertexConsumer vertexConsumer_2 = vertexConsumerProvider.getBuffer(RenderLayer.getWaterMask());
+    VertexConsumer vertexConsumer_2 = vertexConsumers.getBuffer(RenderLayer.getWaterMask());
     this.model.getBottom().render(matrices, vertexConsumer_2, light, OverlayTexture.DEFAULT_UV, null);
     matrices.pop();
-    super.render(boatEntity_1, yaw, tickDelta, matrices, vertexConsumerProvider, light);
+    super.render(boatEntity_1, yaw, tickDelta, matrices, vertexConsumers, light);
   }
 }

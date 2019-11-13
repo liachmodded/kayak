@@ -41,6 +41,12 @@ public final class KayakEntities {
           .trackable(80, 3)
           .build()
   );
+  public static final EntityType<BedBoatEntity> BED_BOAT = register("bed_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, BedBoatEntity::new)
+          .size(EntityDimensions.fixed(1.375F, 0.5625F))
+          .trackable(80, 3)
+          .build()
+  );
 
   public static final Collection<EntityType<? extends CarrierBoatEntity>> CARRIER_BOATS = ImmutableList.of(
       CHEST_BOAT, HOPPER_BOAT, BLOCK_BOAT, FURNACE_BOAT

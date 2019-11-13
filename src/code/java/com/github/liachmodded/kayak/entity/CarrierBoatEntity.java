@@ -36,7 +36,7 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   public abstract BlockState getCarriedState();
 
   @Override
-  public boolean interact(PlayerEntity playerEntity_1, Hand hand_1) {
+  public boolean interact(PlayerEntity player, Hand hand) {
     return false; // Moved to hitPos aware version
   }
 
@@ -84,6 +84,5 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   protected boolean canAddPassenger(Entity entity_1) {
     return this.getPassengerList().size() < 1;
   }
-
 
 }

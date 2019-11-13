@@ -87,7 +87,6 @@ tasks.withType(JavaCompile) {
     tasks.mergeRefmaps.dependsOn it
     options.encoding = "UTF-8"
     // Loom is just so cursed that it does not handle extra source sets nicely
-    options.annotationProcessorPath += configurations.annotationProcessor
     doFirst {
         def args = options.compilerArgs
         project.minecraft {
@@ -98,6 +97,12 @@ tasks.withType(JavaCompile) {
             args.add "-AdefaultObfuscationEnv=named:intermediary"
             refmaps.add refmap
         }
+    }
+}
+
+afterEvaluate {
+    tasks.withType(JavaCompile) {
+        options.annotationProcessorPath += configurations.annotationProcessor
     }
 }
 

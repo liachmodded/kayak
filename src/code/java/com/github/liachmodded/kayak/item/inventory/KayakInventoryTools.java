@@ -6,19 +6,43 @@
 package com.github.liachmodded.kayak.item.inventory;
 
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import net.fabricmc.fabric.api.util.NbtType;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.PacketByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class KayakInventoryTools {
+
+  public static final Map<DyeColor, Block> BEDS = ImmutableMap.<DyeColor, Block>builder()
+      .put(DyeColor.WHITE, Blocks.WHITE_BED)
+      .put(DyeColor.ORANGE, Blocks.ORANGE_BED)
+      .put(DyeColor.MAGENTA, Blocks.MAGENTA_BED)
+      .put(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_BED)
+      .put(DyeColor.YELLOW, Blocks.YELLOW_BED)
+      .put(DyeColor.LIME, Blocks.LIME_BED)
+      .put(DyeColor.PINK, Blocks.PINK_BED)
+      .put(DyeColor.GRAY, Blocks.GRAY_BED)
+      .put(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_BED)
+      .put(DyeColor.CYAN, Blocks.CYAN_BED)
+      .put(DyeColor.PURPLE, Blocks.PURPLE_BED)
+      .put(DyeColor.BLUE, Blocks.BLUE_BED)
+      .put(DyeColor.BROWN, Blocks.BROWN_BED)
+      .put(DyeColor.GREEN, Blocks.GREEN_BED)
+      .put(DyeColor.RED, Blocks.RED_BED)
+      .put(DyeColor.BLACK, Blocks.BLACK_BED)
+      .build();
 
   public static ListTag toTag(Inventory inventory) {
     ListTag ret = new ListTag();
