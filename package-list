@@ -6,6 +6,7 @@ com.github.liachmodded.kayak.entity
 com.github.liachmodded.kayak.item
 com.github.liachmodded.kayak.item.inventory
 com.github.liachmodded.kayak.mixin
+com.github.liachmodded.kayak.network
 com.github.liachmodded.kayak.stat
 com.github.liachmodded.kayak.ui
 com.github.liachmodded.kayak.ui.property
