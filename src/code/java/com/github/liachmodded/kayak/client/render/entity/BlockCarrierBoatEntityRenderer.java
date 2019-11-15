@@ -13,6 +13,7 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 
 public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> extends AbstractBoatEntityRenderer<T> {
 
@@ -34,6 +35,7 @@ public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> e
       matrices.scale(scale, scale, scale);
       matrices.translate(-0.5D, (blockOffset - 8) / 16.0F, 0.5D);
       matrices.translate(0.7D, 0D, 0D);
+      matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
       MinecraftClient.getInstance().getBlockRenderManager()
           .renderBlockAsEntity(state, matrices, vertexConsumers, lightmapIndex, OverlayTexture.DEFAULT_UV);
       matrices.pop();
