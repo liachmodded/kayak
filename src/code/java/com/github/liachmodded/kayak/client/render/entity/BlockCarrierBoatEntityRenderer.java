@@ -26,7 +26,7 @@ public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> e
       MatrixStack matrices, VertexConsumerProvider vertexConsumers, int ambientLightmapIndex) {
     BlockState state = entity.getCarriedState();
     if (state.getRenderType() != BlockRenderType.INVISIBLE) {
-      int blockOffset = 6;//entity.getBlockOffset();
+      int blockOffset = entity.getBlockOffset();
       int blockLight = state.hasEmissiveLighting() ? 15 : Math.max((ambientLightmapIndex & ((1 << 20) - 1)) >> 4, state.getLuminance());
       int lightmapIndex = ((ambientLightmapIndex >> 20) << 20) | blockLight << 4;
       matrices.push();
@@ -35,7 +35,7 @@ public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> e
       matrices.scale(scale, scale, scale);
       matrices.translate(-0.5D, (blockOffset - 8) / 16.0F, 0.5D);
       matrices.translate(0.7D, 0D, 0D);
-      matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
+      matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
       MinecraftClient.getInstance().getBlockRenderManager()
           .renderBlockAsEntity(state, matrices, vertexConsumers, lightmapIndex, OverlayTexture.DEFAULT_UV);
       matrices.pop();

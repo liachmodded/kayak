@@ -1,11 +1,18 @@
 {
-  "entity.kayak.block_carrier_boat": "Block Carrier Boat",
-  "entity.kayak.chest_carrier_boat": "Chest Carrier Boat",
-  "entity.kayak.furnace_carrier_boat": "Furnace Carrier Boat",
-  "item.kayak.oak_carrier_boat": "Oak Block Carrier Boat",
-  "item.kayak.spruce_carrier_boat": "Spruce Block Carrier Boat",
-  "item.kayak.birch_carrier_boat": "Birch Block Carrier Boat",
-  "item.kayak.jungle_carrier_boat": "Jungle Block Carrier Boat",
-  "item.kayak.acacia_carrier_boat": "Acacia Block Carrier Boat",
-  "item.kayak.dark_oak_carrier_boat": "Dark Oak Block Carrier Boat"
+  "entity.kayak.block_boat": "Block Boat",
+  "entity.kayak.chest_boat": "Chest Boat",
+  "entity.kayak.furnace_boat": "Furnace Boat",
+  "entity.kayak.hopper_boat": "Hopper Boat",
+  "item.kayak.oak_chest_boat": "Oak Chest Boat",
+  "item.kayak.spruce_chest_boat": "Spruce Chest Boat",
+  "item.kayak.birch_chest_boat": "Birch Chest Boat",
+  "item.kayak.jungle_chest_boat": "Jungle Chest Boat",
+  "item.kayak.acacia_chest_boat": "Acacia Chest Boat",
+  "item.kayak.dark_oak_chest_boat": "Dark Oak Chest Boat",
+  "item.kayak.oak_hopper_boat": "Oak Hopper Boat",
+  "item.kayak.spruce_hopper_boat": "Spruce Hopper Boat",
+  "item.kayak.birch_hopper_boat": "Birch Hopper Boat",
+  "item.kayak.jungle_hopper_boat": "Jungle Hopper Boat",
+  "item.kayak.acacia_hopper_boat": "Acacia Hopper Boat",
+  "item.kayak.dark_oak_hopper_boat": "Dark Oak Hopper Boat"
 }

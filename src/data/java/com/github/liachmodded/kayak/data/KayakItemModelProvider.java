@@ -15,10 +15,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -40,21 +42,42 @@ public final class KayakItemModelProvider implements DataProvider {
   public void run(DataCache cache) {
     Path path = this.root.getOutput();
 
-    Collection<Item> targets = new ArrayList<>();
-    targets.addAll(KayakItems.CHEST_BOAT_ITEMS.values());
-    targets.addAll(KayakItems.HOPPER_BOAT_ITEMS.values());
+    Collection<Item> simpleItems = new ArrayList<>();
 
-    // add here
-
-    for (Item item : targets) {
+    for (Item item : simpleItems) {
       Identifier itemId = Registry.ITEM.getId(item);
-      writeJsonTo(cache, itemId, path);
+      writeSimpleJsonTo(cache, itemId, path);
+    }
+
+    for (Map.Entry<BoatEntity.Type, Item> entry : KayakItems.CHEST_BOAT_ITEMS.entrySet()) {
+      Identifier itemId = Registry.ITEM.getId(entry.getValue());
+      writeTypedBoatJsonTo(cache, entry.getKey(), "chest_boat", itemId, path);
+    }
+
+    for (Map.Entry<BoatEntity.Type, Item> entry : KayakItems.HOPPER_BOAT_ITEMS.entrySet()) {
+      Identifier itemId = Registry.ITEM.getId(entry.getValue());
+      writeTypedBoatJsonTo(cache, entry.getKey(), "hopper_boat", itemId, path);
     }
   }
 
-  private void writeJsonTo(DataCache cache, Identifier itemId, Path root) {
+  private void writeSimpleJsonTo(DataCache cache, Identifier itemId, Path root) {
     writeJson(cache, makeSimpleGeneratedModel(itemId),
         root.resolve("assets/" + itemId.getNamespace() + "/models/item/" + itemId.getPath() + ".json"));
+  }
+
+  private void writeTypedBoatJsonTo(DataCache cache, BoatEntity.Type boatType, String secondLayer, Identifier itemId, Path root) {
+    writeJson(cache, makeBoatItemModel(boatType, secondLayer, itemId),
+        root.resolve("assets/" + itemId.getNamespace() + "/models/item/" + itemId.getPath() + ".json"));
+  }
+
+  private JsonObject makeBoatItemModel(BoatEntity.Type boatType, String secondLayer, Identifier itemId) {
+    JsonObject ret = new JsonObject();
+    ret.addProperty("parent", MINECRAFT_GENERATED.toString());
+    JsonObject textures = new JsonObject();
+    textures.addProperty("layer0", new Identifier("item/" + boatType.getName() + "_boat").toString());
+    textures.addProperty("layer1", new Identifier(itemId.getNamespace(), "item/" + secondLayer).toString());
+    ret.add("textures", textures);
+    return ret;
   }
 
   private JsonObject makeSimpleGeneratedModel(Identifier itemId) {

@@ -39,7 +39,7 @@ public final class BedBoatEntityRenderer<T extends BedBoatEntity> extends Abstra
       matrices.scale(scale, scale, scale);
       matrices.translate(-0.5D, (blockOffset - 8) / 16.0F, 0.5D);
       matrices.translate(0.7D, 0D, 0D);
-      matrices.multiply(Vector3f.POSITIVE_Y.getRotationQuaternion(90.0F));
+      matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
       BlockRenderManager renderManager = MinecraftClient.getInstance().getBlockRenderManager();
       renderManager.renderBlockAsEntity(state.with(BedBlock.PART, BedPart.FOOT), matrices, vertexConsumers, lightmapIndex, OverlayTexture.DEFAULT_UV);
       matrices.pop();

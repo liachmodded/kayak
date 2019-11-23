@@ -47,6 +47,11 @@ public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopp
   }
 
   @Override
+  public int getBlockOffset() {
+    return 0;
+  }
+
+  @Override
   public World getWorld() {
     return world;
   }

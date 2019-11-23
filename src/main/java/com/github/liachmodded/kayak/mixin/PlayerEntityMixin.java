@@ -8,6 +8,7 @@ package com.github.liachmodded.kayak.mixin;
 import com.github.liachmodded.kayak.entity.SleepableLivingEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
 import net.minecraft.world.World;
@@ -28,5 +29,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Sle
   public void sleep() {
     this.resetStat(Stats.CUSTOM.getOrCreateStat(Stats.TIME_SINCE_REST));
     super.sleep();
+    ((ServerWorld) world).updatePlayersSleeping();
   }
 }

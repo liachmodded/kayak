@@ -38,21 +38,25 @@ public abstract class LivingEntityMixin extends Entity implements SleepableLivin
 
   @Override
   public void sleep() {
-    BlockPos pos = getBlockPos();
-
     this.setPose(EntityPose.SLEEPING);
-    this.setPositionInBed(pos);
-    this.setSleepingPosition(pos);
+    //this.setPositionInBed(pos);
+//    this.setSleepingPosition(pos);
     this.setVelocity(Vec3d.ZERO);
     this.velocityDirty = true;
     this.movingSleeping = true;
   }
 
-  @Inject(method = "baseTick()V", at = @At("TAIL"))
-  public void kayak$onBaseTick(CallbackInfo ci) {
-    if (this.movingSleeping) {
-      setSleepingPosition(getBlockPos());
-    }
+//  @Inject(method = "baseTick()V", at = @At("TAIL"))
+//  public void kayak$onBaseTick(CallbackInfo ci) {
+//    if (this.movingSleeping) {
+//      setSleepingPosition(getBlockPos());
+//    }
+//  }
+
+  @Inject(method = "isSleeping", at = @At("HEAD"), cancellable = true)
+  public void kayak$onSleeping(CallbackInfoReturnable<Boolean> ci) {
+    if (this.movingSleeping)
+      ci.setReturnValue(true);
   }
 
   @Inject(method = "isSleepingInBed", at = @At("HEAD"), cancellable = true)

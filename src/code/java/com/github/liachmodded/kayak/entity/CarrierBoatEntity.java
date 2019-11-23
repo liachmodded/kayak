@@ -84,5 +84,9 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   protected boolean canAddPassenger(Entity entity_1) {
     return this.getPassengerList().size() < 1;
   }
+  
+  public int getBlockOffset() {
+    return 6;
+  }
 
 }

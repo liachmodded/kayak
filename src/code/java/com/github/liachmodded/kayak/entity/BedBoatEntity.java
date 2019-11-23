@@ -7,6 +7,7 @@ package com.github.liachmodded.kayak.entity;
 
 import com.github.liachmodded.kayak.mixin.BoatEntityAccess;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
@@ -14,6 +15,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
@@ -60,14 +63,26 @@ public class BedBoatEntity extends BoatEntity {
   }
 
   @Override
+  public double getMountedHeightOffset() {
+    return this.getHeight() * 0.75D; // You sit on the bed!
+  }
+
+  @Override
   public void updatePassengerPosition(Entity passenger) {
     // Make it only apply to one passenger
     if (this.hasPassenger(passenger)) {
-      float float_2 = (float) ((this.removed ? 0.009999999776482582D : this.getMountedHeightOffset()) + passenger.getHeightOffset());
-
-      passenger.setPosition(this.getX(), this.getY() + (double) float_2, this.getZ());
-      passenger.yaw += ((BoatEntityAccess) this).getYawVelocity();
-      passenger.setHeadYaw(passenger.getHeadYaw() + ((BoatEntityAccess) this).getYawVelocity());
+      float heightOffset = (float) ((this.removed ? 0.01D : this.getMountedHeightOffset()) + passenger.getHeightOffset());
+      if (passenger instanceof LivingEntity && ((LivingEntity) passenger).isSleeping()) {
+        // Include a sleeping offset!
+        passenger.setPosition(this.getX(), this.getY() + 0.6875F + heightOffset, this.getZ());
+        ((LivingEntity) passenger).bodyYaw = yaw;
+        world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getParticleX(1.0D), this.getRandomBodyY() + 0.5D, this.getParticleZ(1.0D), 0, 0, 0);
+      } else {
+        passenger.setPosition(this.getX(), this.getY() + heightOffset, this.getZ());
+        passenger.yaw += ((BoatEntityAccess) this).getYawVelocity();
+        passenger.setHeadYaw(passenger.getHeadYaw() + ((BoatEntityAccess) this).getYawVelocity());
+      }
+      
       this.copyEntityData(passenger);
     }
   }
