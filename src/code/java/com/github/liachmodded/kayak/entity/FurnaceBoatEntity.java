@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
 import com.github.liachmodded.kayak.ui.FurnaceBoatContainer;
 import net.minecraft.block.AbstractFurnaceBlock;
@@ -18,6 +19,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
@@ -133,5 +135,10 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
     super.readCustomDataFromTag(tag);
     setFuel(tag.getInt("Fuel"));
     setInclination(tag.getInt("Inclination"));
+  }
+
+  @Override
+  public Item asItem() {
+    return KayakItems.getVanillaBoat(getBoatType());
   }
 }

@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.mixin.BoatEntityAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
@@ -14,6 +15,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -97,5 +99,10 @@ public class BedBoatEntity extends BoatEntity {
   protected void readCustomDataFromTag(CompoundTag tag) {
     super.readCustomDataFromTag(tag);
     dataTracker.set(COLOR, tag.getByte("color"));
+  }
+
+  @Override
+  public Item asItem() {
+    return KayakItems.getVanillaBoat(getBoatType()); // TODO
   }
 }

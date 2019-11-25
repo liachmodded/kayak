@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -15,6 +16,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
 public class ChestBoatEntity extends InventoryCarrierBoatEntity {
@@ -33,5 +35,10 @@ public class ChestBoatEntity extends InventoryCarrierBoatEntity {
   @Override
   public BlockState getCarriedState() {
     return Blocks.CHEST.getDefaultState();
+  }
+
+  @Override
+  public Item asItem() {
+    return KayakItems.CHEST_BOAT_ITEMS.get(getBoatType());
   }
 }

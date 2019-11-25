@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
 import java.util.List;
 import net.minecraft.block.BlockState;
@@ -18,6 +19,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
+import net.minecraft.item.Item;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.world.World;
 
@@ -72,14 +74,19 @@ public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopp
     }
   }
 
+  @Override
+  public Item asItem() {
+    return KayakItems.HOPPER_BOAT_ITEMS.get(getBoatType());
+  }
+
   protected void suck() {
-    if (HopperBlockEntity.extract(this)) {
-      return;
-    }
     List<ItemEntity> drops = this.world.getEntities(ItemEntity.class, this.getBoundingBox().expand(0.25D, 0.1D, 0.25D),
         EntityPredicates.VALID_ENTITY);
     if (!drops.isEmpty()) {
       HopperBlockEntity.extract(this, drops.get(0));
+      return;
     }
+    // This method below is cursed; returns true when nothing is sucked up; iterates world entity list as well
+    HopperBlockEntity.extract(this);
   }
 }

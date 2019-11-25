@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.item.KayakItems;
 import java.util.Optional;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -14,6 +15,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.Hand;
@@ -59,5 +61,10 @@ public class CustomBlockBoatEntity extends CarrierBoatEntity {
   protected void readCustomDataFromTag(CompoundTag tag) {
     super.readCustomDataFromTag(tag);
     setCarriedState(NbtHelper.toBlockState(tag.getCompound("carriedState")));
+  }
+
+  @Override
+  public Item asItem() {
+    return KayakItems.getVanillaBoat(getBoatType());
   }
 }

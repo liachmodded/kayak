@@ -76,9 +76,7 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   }
 
   @Override
-  public Item asItem() {
-    return KayakItems.CHEST_BOAT_ITEMS.get(getBoatType());
-  }
+  public abstract Item asItem();
 
   @Override
   protected boolean canAddPassenger(Entity entity_1) {
