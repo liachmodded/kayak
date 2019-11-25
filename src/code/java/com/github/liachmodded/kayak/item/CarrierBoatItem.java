@@ -27,12 +27,7 @@ import net.minecraft.world.World;
 
 public class CarrierBoatItem extends Item {
 
-  private static final Predicate<Entity> COLLISION_CHECK;
-
-  static {
-    COLLISION_CHECK = EntityPredicates.EXCEPT_SPECTATOR.and(Entity::collides);
-  }
-
+  private static final Predicate<Entity> COLLISION_CHECK = EntityPredicates.EXCEPT_SPECTATOR.and(Entity::collides);
   private final EntityType<? extends CarrierBoatEntity> entityType;
   private final BoatEntity.Type type;
 
@@ -69,20 +64,20 @@ public class CarrierBoatItem extends Item {
         boat.yaw = player.yaw;
         if (!world.doesNotCollide(boat, boat.getBoundingBox().expand(-0.1D))) {
           return TypedActionResult.fail(stack);
-        } else {
-          if (!world.isClient) {
-            world.spawnEntity(boat);
-            if (!player.abilities.creativeMode) {
-              stack.decrement(1);
-            }
-          }
-
-          player.incrementStat(Stats.USED.getOrCreateStat(this));
-          return TypedActionResult.success(stack);
         }
-      } else {
-        return TypedActionResult.pass(stack);
+
+        if (!world.isClient) {
+          EntityType.loadFromEntityTag(world, player, boat, stack.getTag());
+          world.spawnEntity(boat);
+          if (!player.abilities.creativeMode) {
+            stack.decrement(1);
+          }
+        }
+
+        player.incrementStat(Stats.USED.getOrCreateStat(this));
+        return TypedActionResult.success(stack);
       }
+      return TypedActionResult.pass(stack);
     }
   }
 }

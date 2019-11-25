@@ -13,17 +13,23 @@ import net.minecraft.util.registry.Registry;
 
 public final class KayakStats {
 
-  public static final Identifier CHEST_CARRIER_BOAT_INTERACTION = register("chest_carrier_boat_interaction", StatFormatter.DEFAULT);
-  public static final Identifier HOPPER_CARRIER_BOAT_INTERACTION = register("hopper_carrier_boat_interaction", StatFormatter.DEFAULT);
-  public static final Identifier FURNACE_CARRIER_BOAT_INTERACTION = register("furnace_carrier_boat_interaction", StatFormatter.DEFAULT);
+  public static final Identifier CHEST_BOAT_INTERACTION = register("chest_boat_interaction");
+  public static final Identifier HOPPER_BOAT_INTERACTION = register("hopper_boat_interaction");
+  public static final Identifier FURNACE_BOAT_INTERACTION = register("furnace_boat_interaction");
 
   private KayakStats() {}
 
-  static Identifier register(String name, StatFormatter formatter) {
-    Identifier identifier_1 = Kayak.name(name);
-    Registry.register(Registry.CUSTOM_STAT, name, identifier_1);
-    Stats.CUSTOM.getOrCreateStat(identifier_1, formatter);
-    return identifier_1;
+  private static Identifier register(String name, StatFormatter formatter) {
+    Identifier id = Kayak.name(name);
+    Registry.register(Registry.CUSTOM_STAT, name, id);
+    Stats.CUSTOM.getOrCreateStat(id, formatter);
+    return id;
+  }
+
+  private static Identifier register(String name) {
+    Identifier id = Kayak.name(name);
+    Registry.register(Registry.CUSTOM_STAT, name, id);
+    return id;
   }
 
   public static void init() {

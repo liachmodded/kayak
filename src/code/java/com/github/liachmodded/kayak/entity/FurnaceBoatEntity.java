@@ -113,7 +113,7 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
   @Override
   protected void openInventory(PlayerEntity player) {
     FurnaceBoatContainer.open(player, this);
-    player.increaseStat(KayakStats.FURNACE_CARRIER_BOAT_INTERACTION, 1);
+    player.increaseStat(KayakStats.FURNACE_BOAT_INTERACTION, 1);
   }
 
   @Override

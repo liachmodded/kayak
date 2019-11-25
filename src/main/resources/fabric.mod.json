@@ -9,8 +9,9 @@
     "liach"
   ],
   "contact": {
-    "homepage": "https://github.com/${repoOwner}/${repoName}",
-    "sources": "https://github.com/${repoOwner}/${repoName}"
+    "homepage": "https://${repoOwner}.github.io/${repoName}",
+    "sources": "https://github.com/${repoOwner}/${repoName}",
+    "issues": "https://github.com/${repoOwner}/${repoName}/issues"
   },
 
   "license": "MPL-2.0",

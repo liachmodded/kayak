@@ -1,4 +1,5 @@
 {
+  "entity.kayak.bed_boat": "Bed Boat",
   "entity.kayak.block_boat": "Block Boat",
   "entity.kayak.chest_boat": "Chest Boat",
   "entity.kayak.furnace_boat": "Furnace Boat",
@@ -14,5 +15,9 @@
   "item.kayak.birch_hopper_boat": "Birch Hopper Boat",
   "item.kayak.jungle_hopper_boat": "Jungle Hopper Boat",
   "item.kayak.acacia_hopper_boat": "Acacia Hopper Boat",
-  "item.kayak.dark_oak_hopper_boat": "Dark Oak Hopper Boat"
+  "item.kayak.dark_oak_hopper_boat": "Dark Oak Hopper Boat",
+  "stat.kayak.bed_boat_interaction": "Bed Boat Interaction",
+  "stat.kayak.chest_boat_interaction": "Interactions with Chest Boat",
+  "stat.kayak.hopper_boat_interaction": "Interactions with Hopper Boat",
+  "stat.kayak.furnace_boat_interaction": "Interactions with Furnace Boat"
 }

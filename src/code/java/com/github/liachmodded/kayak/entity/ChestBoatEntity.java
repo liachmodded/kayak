@@ -27,7 +27,7 @@ public class ChestBoatEntity extends InventoryCarrierBoatEntity {
   protected void openInventory(PlayerEntity player) {
     player.openContainer(new ClientDummyContainerProvider((syncId, inv, owner) ->
         new GenericContainer(ContainerType.GENERIC_9X3, syncId, inv, this, 3), getName()));
-    player.increaseStat(KayakStats.CHEST_CARRIER_BOAT_INTERACTION, 1);
+    player.increaseStat(KayakStats.CHEST_BOAT_INTERACTION, 1);
   }
 
   @Override
