@@ -228,7 +228,7 @@ jar {
 afterEvaluate {
     artifacts {
         archives remapJar
-        archives remapSourcesJar.output
+        //archives remapSourcesJar.output wait till loom fix is merged
         archives javadocsJar
     }
 }
@@ -286,7 +286,7 @@ publishing {
             // add all the jars that should be included when publishing to maven
             afterEvaluate {
                 artifact remapJar
-                artifact remapSourcesJar.output
+                //artifact remapSourcesJar.output wait till loom fix is merged
                 artifact javadocsJar
             }
         }
