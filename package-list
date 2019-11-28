@@ -1,6 +1,7 @@
 com.github.liachmodded.kayak
 com.github.liachmodded.kayak.client
 com.github.liachmodded.kayak.client.render.entity
+com.github.liachmodded.kayak.client.sound
 com.github.liachmodded.kayak.client.ui
 com.github.liachmodded.kayak.entity
 com.github.liachmodded.kayak.item
