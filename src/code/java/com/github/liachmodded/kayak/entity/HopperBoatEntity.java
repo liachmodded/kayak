@@ -25,8 +25,8 @@ import net.minecraft.world.World;
 
 public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopper {
 
-  public HopperBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
-    super(entityType_1, world_1, new BasicInventory(5));
+  public HopperBoatEntity(EntityType<? extends BoatEntity> type, World world) {
+    super(type, world, new BasicInventory(5));
   }
 
   @Override

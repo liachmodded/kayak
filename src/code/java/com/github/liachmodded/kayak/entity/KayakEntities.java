@@ -47,10 +47,16 @@ public final class KayakEntities {
           .trackable(80, 3)
           .build()
   );
+  public static final EntityType<JukeboxBoatEntity> JUKEBOX_BOAT = register("jukebox_boat",
+      FabricEntityTypeBuilder.create(EntityCategory.MISC, JukeboxBoatEntity::new)
+          .size(EntityDimensions.fixed(1.375F, 0.5625F))
+          .trackable(80, 3)
+          .build()
+  );
 
   public static final Collection<EntityType<? extends CarrierBoatEntity>> CARRIER_BOATS = ImmutableList.of(
-      CHEST_BOAT, HOPPER_BOAT, BLOCK_BOAT, FURNACE_BOAT
-  );
+      CHEST_BOAT, HOPPER_BOAT, BLOCK_BOAT, FURNACE_BOAT, JUKEBOX_BOAT
+  ); // bed boat is special case
 
   private KayakEntities() {}
 

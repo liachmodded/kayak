@@ -39,8 +39,8 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
       .registerData(FurnaceBoatEntity.class, TrackedDataHandlerRegistry.INTEGER);
   private int lastInclination;
 
-  public FurnaceBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
-    super(entityType_1, world_1, new BasicInventory(1));
+  public FurnaceBoatEntity(EntityType<? extends BoatEntity> type, World world) {
+    super(type, world, new BasicInventory(1));
   }
 
   @Override

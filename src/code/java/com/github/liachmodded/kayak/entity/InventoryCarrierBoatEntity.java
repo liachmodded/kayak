@@ -17,6 +17,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -26,8 +27,8 @@ public abstract class InventoryCarrierBoatEntity extends CarrierBoatEntity imple
 
   protected final Inventory inventory;
 
-  protected InventoryCarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1, Inventory inventory) {
-    super(entityType_1, world_1);
+  protected InventoryCarrierBoatEntity(EntityType<? extends BoatEntity> type, World world, Inventory inventory) {
+    super(type, world);
     this.inventory = inventory;
   }
 
@@ -42,8 +43,11 @@ public abstract class InventoryCarrierBoatEntity extends CarrierBoatEntity imple
   }
 
   @Override
-  protected void interactRear(PlayerEntity player, Hand hand) {
-    openInventory(player);
+  protected ActionResult interactRear(PlayerEntity player, Hand hand) {
+    if (!world.isClient) {
+      openInventory(player);
+    }
+    return ActionResult.SUCCESS;
   }
 
   @Override

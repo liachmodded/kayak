@@ -4,6 +4,7 @@
   "entity.kayak.chest_boat": "Chest Boat",
   "entity.kayak.furnace_boat": "Furnace Boat",
   "entity.kayak.hopper_boat": "Hopper Boat",
+  "entity.kayak.jukebox_boat": "Jukebox Boat",
   "item.kayak.oak_chest_boat": "Oak Chest Boat",
   "item.kayak.spruce_chest_boat": "Spruce Chest Boat",
   "item.kayak.birch_chest_boat": "Birch Chest Boat",
@@ -16,8 +17,15 @@
   "item.kayak.jungle_hopper_boat": "Jungle Hopper Boat",
   "item.kayak.acacia_hopper_boat": "Acacia Hopper Boat",
   "item.kayak.dark_oak_hopper_boat": "Dark Oak Hopper Boat",
+  "item.kayak.oak_jukebox_boat": "Oak Jukebox Boat",
+  "item.kayak.spruce_jukebox_boat": "Spruce Jukebox Boat",
+  "item.kayak.birch_jukebox_boat": "Birch Jukebox Boat",
+  "item.kayak.jungle_jukebox_boat": "Jungle Jukebox Boat",
+  "item.kayak.acacia_jukebox_boat": "Acacia Jukebox Boat",
+  "item.kayak.dark_oak_jukebox_boat": "Dark Oak Jukebox Boat",
   "stat.kayak.bed_boat_interaction": "Bed Boat Interaction",
   "stat.kayak.chest_boat_interaction": "Interactions with Chest Boat",
   "stat.kayak.hopper_boat_interaction": "Interactions with Hopper Boat",
-  "stat.kayak.furnace_boat_interaction": "Interactions with Furnace Boat"
+  "stat.kayak.furnace_boat_interaction": "Interactions with Furnace Boat",
+  "stat.kayak.jukebox_boat_interaction": "Interactions with Jukebox Boat"
 }

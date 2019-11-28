@@ -36,6 +36,8 @@ public final class KayakClient implements ClientModInitializer {
         (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
     EntityRendererRegistry.INSTANCE.register(KayakEntities.BED_BOAT,
         (dispatcher, context) -> new BedBoatEntityRenderer<>(dispatcher));
+    EntityRendererRegistry.INSTANCE.register(KayakEntities.JUKEBOX_BOAT,
+        (dispatcher, context) -> new BlockCarrierBoatEntityRenderer<>(dispatcher));
 
     KayakScreenProviders.init();
 

@@ -5,7 +5,6 @@
  */
 package com.github.liachmodded.kayak.entity;
 
-import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.mixin.BoatEntityAccess;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -20,8 +19,8 @@ import net.minecraft.world.World;
 
 public abstract class CarrierBoatEntity extends BoatEntity {
 
-  protected CarrierBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
-    super(entityType_1, world_1);
+  protected CarrierBoatEntity(EntityType<? extends BoatEntity> type, World world) {
+    super(type, world);
   }
 
   @Override
@@ -52,14 +51,11 @@ public abstract class CarrierBoatEntity extends BoatEntity {
       return super.interactAt(player, hitPos, hand);
     }
 
-    if (!world.isClient) {
-      interactRear(player, hand);
-      return ActionResult.SUCCESS;
-    }
-    return super.interactAt(player, hitPos, hand);
+    return interactRear(player, hand);
   }
 
-  protected abstract void interactRear(PlayerEntity player, Hand hand);
+  // may be called on client
+  protected abstract ActionResult interactRear(PlayerEntity player, Hand hand);
 
   @Override
   public void updatePassengerPosition(Entity entity_1) {
@@ -82,7 +78,7 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   protected boolean canAddPassenger(Entity entity_1) {
     return this.getPassengerList().size() < 1;
   }
-  
+
   public int getBlockOffset() {
     return 6;
   }

@@ -86,7 +86,7 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
 
     renderContent(boatEntity_1, yaw, tickDelta, matrices, vertexConsumers, light);
 
-    this.model.method_22952(boatEntity_1, tickDelta, 0.0F, -0.1F, 0.0F, 0.0F);
+    this.model.setAngles(boatEntity_1, tickDelta, 0.0F, -0.1F, 0.0F, 0.0F);
     VertexConsumer vertexConsumer_1 = vertexConsumers.getBuffer(this.model.getLayer(this.getTexture(boatEntity_1)));
     this.model.render(matrices, vertexConsumer_1, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
     VertexConsumer vertexConsumer_2 = vertexConsumers.getBuffer(RenderLayer.getWaterMask());

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${id}",
+  "id": "kayak",
   "version": "${version}",
 
   "name": "kayak",

@@ -18,6 +18,7 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
@@ -27,13 +28,14 @@ public class CustomBlockBoatEntity extends CarrierBoatEntity {
   private static final TrackedData<Optional<BlockState>> CARRIED_STATE = DataTracker
       .registerData(CustomBlockBoatEntity.class, TrackedDataHandlerRegistry.OPTIONAL_BLOCK_STATE);
 
-  protected CustomBlockBoatEntity(EntityType<? extends BoatEntity> entityType_1, World world_1) {
-    super(entityType_1, world_1);
+  protected CustomBlockBoatEntity(EntityType<? extends BoatEntity> type, World world) {
+    super(type, world);
   }
 
   @Override
-  protected void interactRear(PlayerEntity player, Hand hand) {
+  protected ActionResult interactRear(PlayerEntity player, Hand hand) {
     // Nothing happens!
+    return ActionResult.PASS;
   }
 
   @Override

@@ -16,6 +16,7 @@ public final class KayakStats {
   public static final Identifier CHEST_BOAT_INTERACTION = register("chest_boat_interaction");
   public static final Identifier HOPPER_BOAT_INTERACTION = register("hopper_boat_interaction");
   public static final Identifier FURNACE_BOAT_INTERACTION = register("furnace_boat_interaction");
+  public static final Identifier JUKEBOX_BOAT_INTERACTION = register("jukebox_boat_interaction");
 
   private KayakStats() {}
 
@@ -28,7 +29,7 @@ public final class KayakStats {
 
   private static Identifier register(String name) {
     Identifier id = Kayak.name(name);
-    Registry.register(Registry.CUSTOM_STAT, name, id);
+    Registry.register(Registry.CUSTOM_STAT, id.toString(), id);
     return id;
   }
 

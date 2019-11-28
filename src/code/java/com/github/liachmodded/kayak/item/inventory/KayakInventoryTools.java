@@ -44,6 +44,19 @@ public final class KayakInventoryTools {
       .put(DyeColor.BLACK, Blocks.BLACK_BED)
       .build();
 
+  public static ItemStack copyOne(ItemStack old) {
+    return copy(old, 1);
+  }
+
+  public static ItemStack copy(ItemStack old, int size) {
+    if (old.isEmpty()) {
+      return ItemStack.EMPTY;
+    }
+    ItemStack ret = old.copy();
+    ret.setCount(size);
+    return ret;
+  }
+
   public static ListTag toTag(Inventory inventory) {
     ListTag ret = new ListTag();
     toTags(ret, inventory);

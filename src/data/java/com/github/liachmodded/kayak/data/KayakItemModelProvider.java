@@ -58,6 +58,11 @@ public final class KayakItemModelProvider implements DataProvider {
       Identifier itemId = Registry.ITEM.getId(entry.getValue());
       writeTypedBoatJsonTo(cache, entry.getKey(), "hopper_boat", itemId, path);
     }
+    
+    for (Map.Entry<BoatEntity.Type, Item> entry : KayakItems.JUKEBOX_BOAT_ITEMS.entrySet()) {
+      Identifier itemId = Registry.ITEM.getId(entry.getValue());
+      writeTypedBoatJsonTo(cache, entry.getKey(), "jukebox_boat", itemId, path);
+    }
   }
 
   private void writeSimpleJsonTo(DataCache cache, Identifier itemId, Path root) {

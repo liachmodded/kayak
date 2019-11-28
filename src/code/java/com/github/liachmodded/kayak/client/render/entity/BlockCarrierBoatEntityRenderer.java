@@ -34,7 +34,7 @@ public final class BlockCarrierBoatEntityRenderer<T extends CarrierBoatEntity> e
       float scale = 0.75F;
       matrices.scale(scale, scale, scale);
       matrices.translate(-0.5D, (blockOffset - 8) / 16.0F, 0.5D);
-      matrices.translate(0.7D, 0D, 0D);
+      matrices.translate(0.6D, 0D, 0D);
       matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
       MinecraftClient.getInstance().getBlockRenderManager()
           .renderBlockAsEntity(state, matrices, vertexConsumers, lightmapIndex, OverlayTexture.DEFAULT_UV);
