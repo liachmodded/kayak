@@ -8,6 +8,7 @@ package com.github.liachmodded.kayak.client;
 import com.github.liachmodded.kayak.Kayak;
 import com.github.liachmodded.kayak.client.render.entity.BedBoatEntityRenderer;
 import com.github.liachmodded.kayak.client.render.entity.BlockCarrierBoatEntityRenderer;
+import com.github.liachmodded.kayak.client.sound.EntitySpecificSoundManager;
 import com.github.liachmodded.kayak.client.ui.KayakScreenProviders;
 import com.github.liachmodded.kayak.entity.KayakEntities;
 import com.github.liachmodded.kayak.network.KayakNetworking;
@@ -22,7 +23,21 @@ import org.lwjgl.glfw.GLFW;
 
 public final class KayakClient implements ClientModInitializer {
 
+  private static KayakClient INSTANCE;
   private KeyBinding sleepInBoatKey;
+  private EntitySpecificSoundManager jukeboxBoatSounds;
+
+  public static KayakClient getInstance() {
+    return INSTANCE;
+  }
+
+  public KayakClient() {
+    INSTANCE = this;
+  }
+
+  public EntitySpecificSoundManager getJukeboxBoatSounds() {
+    return jukeboxBoatSounds;
+  }
 
   @Override
   public void onInitializeClient() {
@@ -43,9 +58,11 @@ public final class KayakClient implements ClientModInitializer {
 
     sleepInBoatKey = FabricKeyBinding.Builder.create(Kayak.name("request_sleep_in_boat"), Type.KEYSYM, GLFW.GLFW_KEY_N, "general").build();
     ClientTickCallback.EVENT.register(this::clientTick);
+
+    jukeboxBoatSounds = new EntitySpecificSoundManager();
   }
 
-  public void clientTick(MinecraftClient client) {
+  private void clientTick(MinecraftClient client) {
     if (sleepInBoatKey.isPressed()) {
       KayakNetworking.requestSleepInBoat();
     }

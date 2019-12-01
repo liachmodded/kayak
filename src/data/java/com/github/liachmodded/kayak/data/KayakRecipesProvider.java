@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import net.minecraft.advancement.criterion.EnterBlockCriterion;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -63,6 +64,15 @@ public final class KayakRecipesProvider implements DataProvider {
       ShapelessRecipeJsonFactory.create(entry.getValue())
           .input(vanillaBoat)
           .input(Items.HOPPER)
+          .criterion("has_boat", has(vanillaBoat))
+          .offerTo(consumer);
+    }
+
+    for (Entry<BoatEntity.Type, Item> entry : KayakItems.JUKEBOX_BOAT_ITEMS.entrySet()) {
+      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
+      ShapelessRecipeJsonFactory.create(entry.getValue())
+          .input(vanillaBoat)
+          .input(Blocks.JUKEBOX)
           .criterion("has_boat", has(vanillaBoat))
           .offerTo(consumer);
     }

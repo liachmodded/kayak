@@ -5,11 +5,12 @@
  */
 package com.github.liachmodded.kayak.entity;
 
+import com.github.liachmodded.kayak.client.KayakClient;
+import com.github.liachmodded.kayak.client.sound.EntitySpecificSoundManager;
 import com.github.liachmodded.kayak.client.sound.StoppableEntityTrackingSoundInstance;
 import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.item.inventory.KayakInventoryTools;
 import com.github.liachmodded.kayak.stat.KayakStats;
-import java.lang.ref.WeakReference;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -33,7 +34,6 @@ import net.minecraft.world.World;
 public class JukeboxBoatEntity extends CarrierBoatEntity implements Clearable {
 
   protected static final TrackedData<ItemStack> MUSIC_DISC = DataTracker.registerData(JukeboxBoatEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
-  private WeakReference<StoppableEntityTrackingSoundInstance> soundRef = new WeakReference<>(null);
 
   protected JukeboxBoatEntity(EntityType<? extends BoatEntity> type, World world) {
     super(type, world);
@@ -48,18 +48,17 @@ public class JukeboxBoatEntity extends CarrierBoatEntity implements Clearable {
   @Override
   public void onTrackedDataSet(TrackedData<?> data) {
     super.onTrackedDataSet(data);
-    if (!world.isClient || data != MUSIC_DISC) {
-      return;
+    if (world.isClient && data.equals(MUSIC_DISC)) {
+      updateMusic();
     }
+  }
 
-    StoppableEntityTrackingSoundInstance oldSound = soundRef.get();
-    if (oldSound != null) {
-      oldSound.stop();
-    }
+  private void updateMusic() {
+    EntitySpecificSoundManager sounds = KayakClient.getInstance().getJukeboxBoatSounds();
 
     ItemStack disc = getMusicDisc();
     if (disc.isEmpty()) {
-      soundRef = new WeakReference<>(null);
+      sounds.remove(this);
       return;
     }
 
@@ -67,8 +66,7 @@ public class JukeboxBoatEntity extends CarrierBoatEntity implements Clearable {
     StoppableEntityTrackingSoundInstance newSound = new StoppableEntityTrackingSoundInstance(musicDisc.getSound(),
         SoundCategory.RECORDS, this);
     MinecraftClient.getInstance().inGameHud.setRecordPlayingOverlay(musicDisc.getDescription().asFormattedString());
-    MinecraftClient.getInstance().getSoundManager().play(newSound);
-    soundRef = new WeakReference<>(newSound);
+    sounds.put(this, newSound);
   }
 
   @Override
