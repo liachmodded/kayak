@@ -16,6 +16,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -29,9 +30,10 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Clearable;
 import net.minecraft.util.Hand;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
-public class JukeboxBoatEntity extends CarrierBoatEntity implements Clearable {
+public class JukeboxBoatEntity extends CarrierBoatEntity implements CustomDropBoat, Clearable {
 
   protected static final TrackedData<ItemStack> MUSIC_DISC = DataTracker.registerData(JukeboxBoatEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
@@ -122,6 +124,17 @@ public class JukeboxBoatEntity extends CarrierBoatEntity implements Clearable {
 
   public ItemStack getMusicDisc() {
     return dataTracker.get(MUSIC_DISC);
+  }
+
+  @Override
+  public void dropCustom(DamageSource source) {
+    if (!world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+      return;
+    }
+    ItemStack disc = getMusicDisc();
+    if (!disc.isEmpty()) {
+      dropStack(disc);
+    }
   }
 
   @Override

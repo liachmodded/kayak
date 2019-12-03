@@ -40,7 +40,7 @@ public abstract class AbstractBoatEntityRenderer<T extends BoatEntity> extends E
 
   protected AbstractBoatEntityRenderer(EntityRenderDispatcher entityRenderDispatcher_1) {
     super(entityRenderDispatcher_1);
-    this.field_4673 = 0.8F;
+    this.shadowSize = 0.8F;
   }
 
   protected BoatEntityModel createModel() {

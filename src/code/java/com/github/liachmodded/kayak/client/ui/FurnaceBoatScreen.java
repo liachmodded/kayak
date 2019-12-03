@@ -38,8 +38,8 @@ public class FurnaceBoatScreen extends AbstractContainerScreen<FurnaceBoatContai
   protected void drawBackground(float float_1, int int_1, int int_2) {
     RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     this.minecraft.getTextureManager().bindTexture(BACKGROUND);
-    int int_3 = this.left;
-    int int_4 = this.top;
+    int int_3 = this.x;
+    int int_4 = this.y;
     this.blit(int_3, int_4, 0, 0, this.containerWidth, this.containerHeight);
     int int_6;
     if (this.container.getBoat().getFuel() > 0) {

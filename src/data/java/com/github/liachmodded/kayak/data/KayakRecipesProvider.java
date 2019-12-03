@@ -5,6 +5,7 @@
  */
 package com.github.liachmodded.kayak.data;
 
+import com.github.liachmodded.kayak.Kayak;
 import com.github.liachmodded.kayak.item.KayakItems;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
@@ -28,14 +30,15 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.BoatEntity.Type;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,31 +53,25 @@ public final class KayakRecipesProvider implements DataProvider {
   }
 
   private void generate(Consumer<RecipeJsonProvider> consumer) {
-    for (Entry<BoatEntity.Type, Item> entry : KayakItems.CHEST_BOAT_ITEMS.entrySet()) {
-      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
-      ShapelessRecipeJsonFactory.create(entry.getValue())
-          .input(vanillaBoat)
-          .input(Items.CHEST)
-          .criterion("has_boat", has(vanillaBoat))
-          .offerTo(consumer);
-    }
+    generateForBoat(consumer, KayakItems.CHEST_BOAT_ITEMS, Blocks.CHEST);
+    generateForBoat(consumer, KayakItems.HOPPER_BOAT_ITEMS, Blocks.HOPPER);
+    generateForBoat(consumer, KayakItems.JUKEBOX_BOAT_ITEMS, Blocks.JUKEBOX);
+  }
 
-    for (Entry<BoatEntity.Type, Item> entry : KayakItems.HOPPER_BOAT_ITEMS.entrySet()) {
+  private void generateForBoat(Consumer<RecipeJsonProvider> consumer, Map<Type, Item> boats, ItemConvertible content) {
+    for (Entry<BoatEntity.Type, Item> entry : boats.entrySet()) {
+      Item customBoat = entry.getValue();
       Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
-      ShapelessRecipeJsonFactory.create(entry.getValue())
+      ShapelessRecipeJsonFactory.create(customBoat)
           .input(vanillaBoat)
-          .input(Items.HOPPER)
+          .input(content)
           .criterion("has_boat", has(vanillaBoat))
           .offerTo(consumer);
-    }
 
-    for (Entry<BoatEntity.Type, Item> entry : KayakItems.JUKEBOX_BOAT_ITEMS.entrySet()) {
-      Item vanillaBoat = KayakItems.getVanillaBoat(entry.getKey());
-      ShapelessRecipeJsonFactory.create(entry.getValue())
-          .input(vanillaBoat)
-          .input(Blocks.JUKEBOX)
-          .criterion("has_boat", has(vanillaBoat))
-          .offerTo(consumer);
+      ShapelessRecipeJsonFactory.create(content)
+          .input(customBoat)
+          .criterion("has_boat", has(customBoat))
+          .offerTo(consumer, Kayak.name("boat_decomposition/" + Registry.ITEM.getId(customBoat).getPath()));
     }
   }
 

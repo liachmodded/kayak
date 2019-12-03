@@ -27,8 +27,9 @@ public final class KayakItems {
     Map<Type, Item> chestBoats = new EnumMap<>(Type.class);
     Map<Type, Item> hopperBoats = new EnumMap<>(Type.class);
     Map<Type, Item> jukeboxBoats = new EnumMap<>(Type.class);
-    Settings settings = new Settings().maxCount(1).group(ItemGroup.TRANSPORTATION);
+
     for (Type boatType : Type.values()) {
+      Settings settings = new Settings().maxCount(1).group(ItemGroup.TRANSPORTATION).recipeRemainder(getVanillaBoat(boatType));
       chestBoats.put(boatType, register(boatType.getName() + "_chest_boat",
           new CarrierBoatItem(KayakEntities.CHEST_BOAT, boatType, settings)));
       hopperBoats.put(boatType, register(boatType.getName() + "_hopper_boat",
