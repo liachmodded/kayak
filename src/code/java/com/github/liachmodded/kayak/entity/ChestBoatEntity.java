@@ -9,14 +9,14 @@ import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.network.ClientDummyContainerProvider;
-import net.minecraft.container.ContainerType;
-import net.minecraft.container.GenericContainer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.item.Item;
+import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.world.World;
 
 public class ChestBoatEntity extends InventoryCarrierBoatEntity {
@@ -27,8 +27,8 @@ public class ChestBoatEntity extends InventoryCarrierBoatEntity {
 
   @Override
   protected void openInventory(PlayerEntity player) {
-    player.openContainer(new ClientDummyContainerProvider((syncId, inv, owner) ->
-        new GenericContainer(ContainerType.GENERIC_9X3, syncId, inv, this, 3), getName()));
+    player.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, inv, owner) ->
+        new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, syncId, inv, this, 3), getName()));
     player.increaseStat(KayakStats.CHEST_BOAT_INTERACTION, 1);
   }
 

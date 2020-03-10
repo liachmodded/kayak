@@ -43,11 +43,11 @@ public final class KayakItemTagProvider extends ItemTagsProvider implements Kaya
 
   @Override
   public Map<Tag<Item>, Builder<Item>> getBuilderMap() {
-    return field_11481;
+    return this.tagBuilders;
   }
 
   @Override
-  protected void method_10511(TagContainer<Item> tagContainer) {
+  protected void setContainer(TagContainer<Item> tagContainer) {
   }
 
   @Override

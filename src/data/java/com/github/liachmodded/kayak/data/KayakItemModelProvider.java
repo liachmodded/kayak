@@ -20,6 +20,7 @@ import java.util.Objects;
 import net.minecraft.data.DataCache;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.client.model.BlockStateModelGenerator;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -47,6 +48,8 @@ public final class KayakItemModelProvider implements DataProvider {
     for (Item item : simpleItems) {
       Identifier itemId = Registry.ITEM.getId(item);
       writeSimpleJsonTo(cache, itemId, path);
+
+      // todo BlockStateModelGenerator
     }
 
     for (Map.Entry<BoatEntity.Type, Item> entry : KayakItems.CHEST_BOAT_ITEMS.entrySet()) {

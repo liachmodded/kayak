@@ -6,14 +6,14 @@
 package com.github.liachmodded.kayak.ui.property;
 
 import com.github.liachmodded.kayak.entity.FurnaceBoatEntity;
-import com.github.liachmodded.kayak.ui.KayakContainerProviders;
+import com.github.liachmodded.kayak.ui.KayakScreenHandlerProviders;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 
 public final class KayakContainerTools {
 
   public static void open(PlayerEntity player, FurnaceBoatEntity boat) {
-    ContainerProviderRegistry.INSTANCE.openContainer(KayakContainerProviders.FURNACE_BOAT, player, buf -> {
+    ContainerProviderRegistry.INSTANCE.openContainer(KayakScreenHandlerProviders.FURNACE_BOAT, player, buf -> {
       buf.writeVarInt(boat.getEntityId());
     });
   }

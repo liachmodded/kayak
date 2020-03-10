@@ -12,8 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
-import net.minecraft.client.network.ClientDummyContainerProvider;
-import net.minecraft.container.HopperContainer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +19,8 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.inventory.BasicInventory;
 import net.minecraft.item.Item;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.screen.HopperScreenHandler;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.world.World;
 
 public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopper {
@@ -31,8 +31,8 @@ public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopp
 
   @Override
   protected void openInventory(PlayerEntity player) {
-    player.openContainer(new ClientDummyContainerProvider((syncId, inv, owner) ->
-        new HopperContainer(syncId, inv, inventory), getName()));
+    player.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, inv, owner) ->
+        new HopperScreenHandler(syncId, inv, inventory), getName()));
     player.increaseStat(KayakStats.HOPPER_BOAT_INTERACTION, 1);
   }
 

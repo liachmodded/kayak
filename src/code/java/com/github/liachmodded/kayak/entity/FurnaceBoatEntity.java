@@ -7,7 +7,7 @@ package com.github.liachmodded.kayak.entity;
 
 import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.stat.KayakStats;
-import com.github.liachmodded.kayak.ui.FurnaceBoatContainer;
+import com.github.liachmodded.kayak.ui.FurnaceBoatScreenHandler;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -114,7 +114,7 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
 
   @Override
   protected void openInventory(PlayerEntity player) {
-    FurnaceBoatContainer.open(player, this);
+    FurnaceBoatScreenHandler.open(player, this);
     player.increaseStat(KayakStats.FURNACE_BOAT_INTERACTION, 1);
   }
 

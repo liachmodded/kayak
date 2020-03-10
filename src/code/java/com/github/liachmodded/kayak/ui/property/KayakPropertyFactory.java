@@ -9,18 +9,18 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
-import net.minecraft.container.Property;
+import net.minecraft.screen.Property;
 
 public final class KayakPropertyFactory {
 
   @SafeVarargs
-  public static <T> void addToContainer(Consumer<Property> adder, T target, PropertyApplication<T>... applications) {
+  public static <T> void addToHandler(Consumer<Property> adder, T target, PropertyApplication<T>... applications) {
     for (PropertyApplication<T> application : applications) {
       adder.accept(of(target, application));
     }
   }
 
-  public static <T> void addToContainer(Consumer<Property> adder, T target, Iterable<PropertyApplication<T>> applications) {
+  public static <T> void addToHandler(Consumer<Property> adder, T target, Iterable<PropertyApplication<T>> applications) {
     for (PropertyApplication<T> application : applications) {
       adder.accept(of(target, application));
     }

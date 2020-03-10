@@ -59,7 +59,7 @@ public class CarrierBoatItem extends Item {
 
       if (hitResult.getType() == HitResult.Type.BLOCK) {
         CarrierBoatEntity boat = Preconditions.checkNotNull(entityType.create(world));
-        boat.setPosition(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
+        boat.updatePosition(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         boat.setBoatType(this.type);
         boat.yaw = player.yaw;
         if (!world.doesNotCollide(boat, boat.getBoundingBox().expand(-0.1D))) {

@@ -9,7 +9,7 @@ import com.github.liachmodded.kayak.entity.KayakEntities;
 import com.github.liachmodded.kayak.item.KayakItems;
 import com.github.liachmodded.kayak.network.KayakNetworking;
 import com.github.liachmodded.kayak.stat.KayakStats;
-import com.github.liachmodded.kayak.ui.KayakContainerProviders;
+import com.github.liachmodded.kayak.ui.KayakScreenHandlerProviders;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.registry.CommandRegistry;
 import net.minecraft.util.Identifier;
@@ -33,7 +33,7 @@ public final class Kayak implements ModInitializer {
     KayakEntities.init();
     KayakItems.init();
     KayakStats.init();
-    KayakContainerProviders.init();
+    KayakScreenHandlerProviders.init();
     KayakNetworking.init();
 
     CommandRegistry.INSTANCE.register(false, new KayakCommand()::register);

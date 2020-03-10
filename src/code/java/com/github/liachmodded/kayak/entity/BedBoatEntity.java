@@ -76,11 +76,11 @@ public class BedBoatEntity extends BoatEntity {
       float heightOffset = (float) ((this.removed ? 0.01D : this.getMountedHeightOffset()) + passenger.getHeightOffset());
       if (passenger instanceof LivingEntity && ((LivingEntity) passenger).isSleeping()) {
         // Include a sleeping offset!
-        passenger.setPosition(this.getX(), this.getY() + 0.6875F + heightOffset, this.getZ());
+        passenger.resetPosition(this.getX(), this.getY() + 0.6875F + heightOffset, this.getZ());
         ((LivingEntity) passenger).bodyYaw = yaw;
         world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getParticleX(1.0D), this.getRandomBodyY() + 0.5D, this.getParticleZ(1.0D), 0, 0, 0);
       } else {
-        passenger.setPosition(this.getX(), this.getY() + heightOffset, this.getZ());
+        passenger.resetPosition(this.getX(), this.getY() + heightOffset, this.getZ());
         passenger.yaw += ((BoatEntityAccess) this).getYawVelocity();
         passenger.setHeadYaw(passenger.getHeadYaw() + ((BoatEntityAccess) this).getYawVelocity());
       }

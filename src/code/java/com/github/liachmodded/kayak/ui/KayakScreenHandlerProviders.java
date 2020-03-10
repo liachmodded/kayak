@@ -8,17 +8,17 @@ package com.github.liachmodded.kayak.ui;
 import com.github.liachmodded.kayak.Kayak;
 import net.fabricmc.fabric.api.container.ContainerFactory;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.minecraft.container.Container;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class KayakContainerProviders {
+public final class KayakScreenHandlerProviders {
 
-  public static final Identifier FURNACE_BOAT = register("furnace_boat", FurnaceBoatContainer::fromPacket);
+  public static final Identifier FURNACE_BOAT = register("furnace_boat", FurnaceBoatScreenHandler::fromPacket);
 
-  private KayakContainerProviders() {}
+  private KayakScreenHandlerProviders() {}
 
-  static Identifier register(String name, ContainerFactory<@Nullable Container> factory) {
+  static Identifier register(String name, ContainerFactory<@Nullable ScreenHandler> factory) {
     Identifier id = Kayak.name(name);
     ContainerProviderRegistry.INSTANCE.registerFactory(id, factory);
     return id;

@@ -24,8 +24,8 @@ public abstract class CarrierBoatEntity extends BoatEntity {
   }
 
   @Override
-  public void setPosition(double x, double y, double z) {
-    super.setPosition(x, y, z);
+  public void resetPosition(double x, double y, double z) {
+    super.resetPosition(x, y, z);
     this.setVelocity(Vec3d.ZERO);
     this.prevX = x;
     this.prevY = y;
@@ -64,7 +64,7 @@ public abstract class CarrierBoatEntity extends BoatEntity {
       float float_2 = (float) ((this.removed ? 0.009999999776482582D : this.getMountedHeightOffset()) + entity_1.getHeightOffset());
 
       Vec3d vec3d_1 = (new Vec3d(0.2F, 0.0D, 0.0D)).rotateY(-this.yaw * 0.017453292F - 1.5707964F);
-      entity_1.setPosition(this.getX() + vec3d_1.x, this.getY() + (double) float_2, this.getZ() + vec3d_1.z);
+      entity_1.resetPosition(this.getX() + vec3d_1.x, this.getY() + (double) float_2, this.getZ() + vec3d_1.z);
       entity_1.yaw += ((BoatEntityAccess) this).getYawVelocity();
       entity_1.setHeadYaw(entity_1.getHeadYaw() + ((BoatEntityAccess) this).getYawVelocity());
       this.copyEntityData(entity_1);

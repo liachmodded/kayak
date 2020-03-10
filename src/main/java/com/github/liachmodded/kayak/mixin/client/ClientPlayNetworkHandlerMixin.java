@@ -7,10 +7,10 @@ package com.github.liachmodded.kayak.mixin.client;
 
 import com.github.liachmodded.kayak.Kayak;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.packet.EntitySpawnS2CPacket;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +26,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
   @Shadow
   private ClientWorld world;
 
-  @Inject(method = "onEntitySpawn", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/network/packet/EntitySpawnS2CPacket;getEntityTypeId()Lnet/minecraft/entity/EntityType;"),
+  @Inject(method = "onEntitySpawn", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/network/packet/s2c/play/EntitySpawnS2CPacket;getEntityTypeId()Lnet/minecraft/entity/EntityType;"),
       locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
   public void handleEntitySpawnPacket(EntitySpawnS2CPacket packet, CallbackInfo ci, double x, double y, double z, EntityType<?> type) {
     Identifier id = Registry.ENTITY_TYPE.getId(type);
@@ -38,7 +38,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
         return;
       }
 
-      entity.setPosition(x, y, z);
+      entity.updatePosition(x, y, z);
 
       int networkId = packet.getId();
       entity.updateTrackedPosition(x, y, z);

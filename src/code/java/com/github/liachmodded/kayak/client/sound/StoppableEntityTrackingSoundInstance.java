@@ -21,6 +21,6 @@ public final class StoppableEntityTrackingSoundInstance extends EntityTrackingSo
   }
   
   public void stop() {
-    this.done = true;
+    setDone();
   }
 }

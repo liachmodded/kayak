@@ -34,11 +34,11 @@ public class KayakEntityTagProvider extends EntityTypeTagsProvider implements Ka
 
   @Override
   public Map<Tag<EntityType<?>>, Builder<EntityType<?>>> getBuilderMap() {
-    return field_11481;
+    return this.tagBuilders;
   }
 
   @Override
-  protected void method_10511(TagContainer<EntityType<?>> container) {
+  protected void setContainer(TagContainer<EntityType<?>> container) {
   }
 
   @Override

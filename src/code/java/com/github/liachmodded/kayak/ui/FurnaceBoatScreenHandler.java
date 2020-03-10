@@ -11,22 +11,22 @@ import com.github.liachmodded.kayak.ui.property.KayakPropertyFactory;
 import com.google.common.base.Preconditions;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.container.Slot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.MathHelper;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class FurnaceBoatContainer extends InventoryContainer {
+public class FurnaceBoatScreenHandler extends InventoryScreenHandler {
 
   private final FurnaceBoatEntity boat;
 
-  protected FurnaceBoatContainer(int syncId, PlayerInventory playerInventory, Inventory inventory, FurnaceBoatEntity boat) {
+  protected FurnaceBoatScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, FurnaceBoatEntity boat) {
     super(syncId, playerInventory, inventory);
     this.boat = Preconditions.checkNotNull(boat);
 
@@ -34,12 +34,12 @@ public class FurnaceBoatContainer extends InventoryContainer {
   }
 
   public static void open(PlayerEntity player, FurnaceBoatEntity boat) {
-    ContainerProviderRegistry.INSTANCE.openContainer(KayakContainerProviders.FURNACE_BOAT, player, buf -> {
+    ContainerProviderRegistry.INSTANCE.openContainer(KayakScreenHandlerProviders.FURNACE_BOAT, player, buf -> {
       buf.writeVarInt(boat.getEntityId());
     });
   }
 
-  public static @Nullable FurnaceBoatContainer fromPacket(int syncId, Identifier guiId, PlayerEntity player, PacketByteBuf buf) {
+  public static @Nullable FurnaceBoatScreenHandler fromPacket(int syncId, Identifier guiId, PlayerEntity player, PacketByteBuf buf) {
     int entityId = buf.readVarInt();
     Entity entity = player.world.getEntityById(entityId);
     if (!(entity instanceof FurnaceBoatEntity)) {
@@ -48,7 +48,7 @@ public class FurnaceBoatContainer extends InventoryContainer {
     }
     FurnaceBoatEntity boat = (FurnaceBoatEntity) entity;
     // Cannot use default inventory because otherwise it is just discarded by fabric container api
-    return new FurnaceBoatContainer(syncId, player.inventory, boat.getBackingInventory(), boat);
+    return new FurnaceBoatScreenHandler(syncId, player.inventory, boat.getBackingInventory(), boat);
   }
 
   public FurnaceBoatEntity getBoat() {
