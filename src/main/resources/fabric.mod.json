@@ -20,10 +20,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.github.liachmodded.kayak.client.KayakClient"
+      "com.github.liachmodded.kayak.client.KayakClient::INSTANCE"
     ],
     "main": [
-      "com.github.liachmodded.kayak.Kayak"
+      "com.github.liachmodded.kayak.Kayak::INSTANCE"
     ]
   },
   "mixins": [

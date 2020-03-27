@@ -29,6 +29,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Sle
   public void sleep() {
     this.resetStat(Stats.CUSTOM.getOrCreateStat(Stats.TIME_SINCE_REST));
     super.sleep();
-    ((ServerWorld) world).updatePlayersSleeping();
+    ((ServerWorld) world).updateSleepingPlayers();
   }
 }

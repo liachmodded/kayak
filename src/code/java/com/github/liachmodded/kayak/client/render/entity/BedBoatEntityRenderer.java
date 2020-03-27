@@ -27,12 +27,10 @@ public final class BedBoatEntityRenderer<T extends BedBoatEntity> extends Abstra
 
   @Override
   protected void renderContent(T entity, float yaw, float tickDelta,
-      MatrixStack matrices, VertexConsumerProvider vertexConsumers, int ambientLightmapIndex) {
+      MatrixStack matrices, VertexConsumerProvider vertexConsumers, int lightmapIndex) {
     BlockState state = KayakInventoryTools.BEDS.get(entity.getBedColor()).getDefaultState();
     if (state.getRenderType() != BlockRenderType.INVISIBLE) {
       int blockOffset = 6;//entity.getBlockOffset();
-      int blockLight = state.hasEmissiveLighting() ? 15 : Math.max((ambientLightmapIndex & ((1 << 20) - 1)) >> 4, state.getLuminance());
-      int lightmapIndex = ((ambientLightmapIndex >> 20) << 20) | blockLight << 4;
       matrices.push();
       matrices.scale(-1, -1, 1); // Boat is flipped by default
       float scale = 0.75F;

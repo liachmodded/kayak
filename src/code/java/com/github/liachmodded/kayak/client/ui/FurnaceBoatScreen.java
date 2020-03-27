@@ -7,12 +7,12 @@ package com.github.liachmodded.kayak.client.ui;
 
 import com.github.liachmodded.kayak.ui.FurnaceBoatScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.screen.ingame.ScreenWithHandler;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class FurnaceBoatScreen extends ScreenWithHandler<FurnaceBoatScreenHandler> {
+public class FurnaceBoatScreen extends HandledScreen<FurnaceBoatScreenHandler> {
 
   private static final Identifier BACKGROUND = new Identifier("minecraft", "textures/gui/container/furnace.png");
 
@@ -40,11 +40,11 @@ public class FurnaceBoatScreen extends ScreenWithHandler<FurnaceBoatScreenHandle
     this.client.getTextureManager().bindTexture(BACKGROUND);
     int int_3 = this.x;
     int int_4 = this.y;
-    this.blit(int_3, int_4, 0, 0, this.width, this.height);
+    this.drawTexture(int_3, int_4, 0, 0, this.width, this.height);
     int int_6;
     if (this.handler.getBoat().getFuel() > 0) {
       int_6 = this.handler.getFuelProgress();
-      this.blit(int_3 + 56, int_4 + 36 + 12 - int_6, 176, 12 - int_6, 14, int_6 + 1);
+      this.drawTexture(int_3 + 56, int_4 + 36 + 12 - int_6, 176, 12 - int_6, 14, int_6 + 1);
     }
 
 //    int_6 = ((AbstractFurnaceContainer)this.container).getCookProgress();

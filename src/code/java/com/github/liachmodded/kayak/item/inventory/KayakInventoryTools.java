@@ -19,8 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.PacketByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class KayakInventoryTools {

@@ -18,6 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 public final class Kayak implements ModInitializer {
 
+  public static final Kayak INSTANCE = new Kayak();
+
   /**
    * The mod identifier of kayak.
    */
@@ -27,6 +29,8 @@ public final class Kayak implements ModInitializer {
   public static Identifier name(String name) {
     return new Identifier(ID, name);
   }
+
+  private Kayak() {}
 
   @Override
   public void onInitialize() {

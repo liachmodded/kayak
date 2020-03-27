@@ -23,16 +23,12 @@ import org.lwjgl.glfw.GLFW;
 
 public final class KayakClient implements ClientModInitializer {
 
-  private static KayakClient INSTANCE;
+  public static final KayakClient INSTANCE = new KayakClient();
   private KeyBinding sleepInBoatKey;
   private EntitySpecificSoundManager jukeboxBoatSounds;
 
   public static KayakClient getInstance() {
     return INSTANCE;
-  }
-
-  public KayakClient() {
-    INSTANCE = this;
   }
 
   public EntitySpecificSoundManager getJukeboxBoatSounds() {
